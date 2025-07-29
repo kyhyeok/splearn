@@ -98,7 +98,7 @@ class MemberTest {
     @Test
     void invalidEmail() {
         assertThatThrownBy(() ->
-            Member.register(createMemberRegisterRequest("invaluid email"), passwordEncoder)
+                Member.register(createMemberRegisterRequest("invaluid email"), passwordEncoder)
         ).isInstanceOf(IllegalArgumentException.class);
 
         Member.register(createMemberRegisterRequest(), passwordEncoder);
