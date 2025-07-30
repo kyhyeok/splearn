@@ -1,6 +1,7 @@
 package kimspring.splearn.application;
 
 import jakarta.transaction.Transactional;
+import kimspring.splearn.application.provided.MemberFinder;
 import kimspring.splearn.application.provided.MemberRegister;
 import kimspring.splearn.application.required.EmailSender;
 import kimspring.splearn.application.required.MemberRepository;
@@ -13,7 +14,8 @@ import org.springframework.validation.annotation.Validated;
 @Transactional
 @Validated
 @RequiredArgsConstructor
-public class MemberService implements MemberRegister {
+public class MemberModifyService implements MemberRegister {
+    private final MemberFinder memberFinder;
     private final MemberRepository memberRepository;
     private final EmailSender emailSender;
     private final PasswordEncoder passwordEncoder;
@@ -29,6 +31,15 @@ public class MemberService implements MemberRegister {
         sendWelcomeEmail(member);
 
         return member;
+    }
+
+    @Override
+    public Member activate(Long memberId) {
+        Member member = memberFinder.find(memberId);
+
+        member.activate();
+
+        return memberRepository.save(member);
     }
 
     private void sendWelcomeEmail(Member member) {
