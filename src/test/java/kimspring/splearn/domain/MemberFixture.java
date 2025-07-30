@@ -2,7 +2,7 @@ package kimspring.splearn.domain;
 
 public class MemberFixture {
     public static MemberRegisterRequest createMemberRegisterRequest(String email) {
-        return new MemberRegisterRequest(email, "Kim", "secret");
+        return new MemberRegisterRequest(email, "KimHyeok", "verysecret");
     }
 
     public static MemberRegisterRequest createMemberRegisterRequest() {

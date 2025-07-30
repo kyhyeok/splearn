@@ -1,13 +1,17 @@
 package kimspring.splearn.application;
 
+import jakarta.transaction.Transactional;
 import kimspring.splearn.application.provided.MemberRegister;
 import kimspring.splearn.application.required.EmailSender;
 import kimspring.splearn.application.required.MemberRepository;
 import kimspring.splearn.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 @Service
+@Transactional
+@Validated
 @RequiredArgsConstructor
 public class MemberService implements MemberRegister {
     private final MemberRepository memberRepository;
