@@ -12,8 +12,9 @@ import org.springframework.context.annotation.Import;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@Transactional
+
 @SpringBootTest
+@Transactional
 @Import(SplearnTestConfiguration.class)
 record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityManager) {
     @Test
@@ -54,6 +55,6 @@ record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityMan
 
     private void checkValidation(MemberRegisterRequest invalid) {
         assertThatThrownBy(() -> memberRegister.register(invalid))
-            .isInstanceOf(ConstraintViolationException.class);
+                .isInstanceOf(ConstraintViolationException.class);
     }
 }
