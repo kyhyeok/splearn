@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Transactional
 @SpringBootTest
 @Import(SplearnTestConfiguration.class)
-public record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityManager) {
+record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityManager) {
     @Test
     void register() {
         Member member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
@@ -46,13 +46,13 @@ public record MemberRegisterTest(MemberRegister memberRegister, EntityManager en
 
     @Test
     void memberRegisterRequestFail() {
-        extracted(new MemberRegisterRequest("kim@splearn.app", "Kim", "secret1234"));
-        extracted(new MemberRegisterRequest("kim@splearn.app", "KimLongNameSplearnTestCode", "secret1234"));
-        extracted(new MemberRegisterRequest("kimsplearn.app", "KimLongName", "secret1234"));
-        extracted(new MemberRegisterRequest("kim#splearn.app", "KimLongName", "secret"));
+        checkValidation(new MemberRegisterRequest("kim@splearn.app", "Kim", "secret1234"));
+        checkValidation(new MemberRegisterRequest("kim@splearn.app", "KimLongNameSplearnTestCode", "secret1234"));
+        checkValidation(new MemberRegisterRequest("kimsplearn.app", "KimLongName", "secret1234"));
+        checkValidation(new MemberRegisterRequest("kim#splearn.app", "KimLongName", "secret"));
     }
 
-    private void extracted(MemberRegisterRequest invalid) {
+    private void checkValidation(MemberRegisterRequest invalid) {
         assertThatThrownBy(() -> memberRegister.register(invalid))
             .isInstanceOf(ConstraintViolationException.class);
     }

@@ -1,9 +1,5 @@
 package kimspring.splearn.application.provided;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-
 class MemberRegisterManualTest {
 //    @Test
 //    void registerTestStub() {

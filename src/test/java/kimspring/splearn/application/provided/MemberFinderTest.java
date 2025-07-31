@@ -3,7 +3,6 @@ package kimspring.splearn.application.provided;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import kimspring.splearn.SplearnTestConfiguration;
-import kimspring.splearn.application.required.MemberRepository;
 import kimspring.splearn.domain.Member;
 import kimspring.splearn.domain.MemberFixture;
 import org.junit.jupiter.api.Test;
