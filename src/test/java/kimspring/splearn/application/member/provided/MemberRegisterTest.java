@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -71,7 +70,37 @@ record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityMan
         member = memberRegister.updateInfo(member.getId(), request);
 
         assertThat(member.getDetail().getProfile().address()).isEqualTo(request.profileAddress());
+    }
 
+    @Test
+    void updateInfoFail() {
+        Member member = registerMember();
+        memberRegister.activate(member.getId());
+        memberRegister.updateInfo(member.getId(), new MemberInfoUpdateRequest("Hyeok", "kim001", "자기소개"));
+
+        Member member2 = registerMember("kiim@splearn.app");
+        memberRegister.activate(member2.getId());
+        entityManager.flush();
+        entityManager.clear();
+
+        // member2는 기존의 member와 같은 프로필 주소를 사용할 수 없다
+        assertThatThrownBy(() -> memberRegister.updateInfo(member2.getId(), new MemberInfoUpdateRequest("Kimmy", "kim001", "자기소개임")))
+                .isInstanceOf(DuplicateProfileException.class);
+
+        // 다른 프로필 주소로는 변경 가능
+        memberRegister.updateInfo(member2.getId(), new MemberInfoUpdateRequest("Kimmy", "kim002", "자기소개임"));
+
+        // 기존 프로필 주소를 바꾸는 것도 가능
+        memberRegister.updateInfo(member.getId(), new MemberInfoUpdateRequest("Kimmy", "kim001", "자기소개임"));
+
+        // 프로필 주소를 제거하는 것도 가능
+        memberRegister.updateInfo(member.getId(), new MemberInfoUpdateRequest("Kimmy", "", "자기소개임"));
+
+        // 프로필 주소 중복은 허용하지 않음
+        assertThatThrownBy(() ->
+                memberRegister.updateInfo(member.getId(),
+                        new MemberInfoUpdateRequest("Kimmy", "kim002", "자기소개임")))
+                .isInstanceOf(DuplicateProfileException.class);
     }
 
     @Test
@@ -89,6 +118,13 @@ record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityMan
 
     private Member registerMember() {
         Member member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
+        entityManager.flush();
+        entityManager.clear();
+        return member;
+    }
+
+    private Member registerMember(String email) {
+        Member member = memberRegister.register(MemberFixture.createMemberRegisterRequest(email));
         entityManager.flush();
         entityManager.clear();
         return member;
