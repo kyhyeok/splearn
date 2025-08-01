@@ -1,8 +1,8 @@
 package kimspring.splearn;
 
-import kimspring.splearn.application.required.EmailSender;
-import kimspring.splearn.domain.MemberFixture;
-import kimspring.splearn.domain.PasswordEncoder;
+import kimspring.splearn.application.member.required.EmailSender;
+import kimspring.splearn.domain.member.MemberFixture;
+import kimspring.splearn.domain.member.PasswordEncoder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 

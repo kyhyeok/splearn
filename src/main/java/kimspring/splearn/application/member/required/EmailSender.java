@@ -1,6 +1,6 @@
-package kimspring.splearn.application.required;
+package kimspring.splearn.application.member.required;
 
-import kimspring.splearn.domain.Email;
+import kimspring.splearn.domain.shared.Email;
 
 /**
  * 이메일을 발송한다

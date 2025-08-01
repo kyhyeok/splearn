@@ -1,6 +1,6 @@
-package kimspring.splearn.application.provided;
+package kimspring.splearn.application.member.provided;
 
-import kimspring.splearn.domain.Member;
+import kimspring.splearn.domain.member.Member;
 
 /**
  * 회원을 조회한다

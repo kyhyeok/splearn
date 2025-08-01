@@ -1,11 +1,15 @@
-package kimspring.splearn.application;
+package kimspring.splearn.application.member;
 
 import jakarta.transaction.Transactional;
-import kimspring.splearn.application.provided.MemberFinder;
-import kimspring.splearn.application.provided.MemberRegister;
-import kimspring.splearn.application.required.EmailSender;
-import kimspring.splearn.application.required.MemberRepository;
-import kimspring.splearn.domain.*;
+import kimspring.splearn.application.member.provided.MemberFinder;
+import kimspring.splearn.application.member.provided.MemberRegister;
+import kimspring.splearn.application.member.required.EmailSender;
+import kimspring.splearn.application.member.required.MemberRepository;
+import kimspring.splearn.domain.member.DuplicateEmailException;
+import kimspring.splearn.domain.member.Member;
+import kimspring.splearn.domain.member.MemberRegisterRequest;
+import kimspring.splearn.domain.member.PasswordEncoder;
+import kimspring.splearn.domain.shared.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;

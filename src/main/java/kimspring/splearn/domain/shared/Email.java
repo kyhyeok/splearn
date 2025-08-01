@@ -1,4 +1,4 @@
-package kimspring.splearn.domain;
+package kimspring.splearn.domain.shared;
 
 import java.util.regex.Pattern;
 

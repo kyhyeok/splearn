@@ -14,7 +14,7 @@
         </attributes>
     </mapped-superclass>
 
-    <entity class="kimspring.splearn.domain.Member">
+    <entity class="kimspring.splearn.domain.member.Member">
         <table name="member">
             <unique-constraint name="UK_MEMBER_EMAIL_ADDRESS">
                 <column-name>email_address</column-name>
@@ -44,7 +44,7 @@
         </attributes>
     </entity>
 
-    <embeddable class="kimspring.splearn.domain.Email">
+    <embeddable class="kimspring.splearn.domain.shared.Email">
         <attributes>
             <basic name="address">
                 <column name="email_address" nullable="false" length="150"/>

@@ -1,4 +1,4 @@
-package kimspring.splearn.domain;
+package kimspring.splearn.domain.member;
 
 public interface PasswordEncoder {
     String encode(String password);

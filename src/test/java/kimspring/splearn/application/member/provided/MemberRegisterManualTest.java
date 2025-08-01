@@ -1,4 +1,4 @@
-package kimspring.splearn.application.provided;
+package kimspring.splearn.application.member.provided;
 
 class MemberRegisterManualTest {
 //    @Test

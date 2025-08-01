@@ -1,7 +1,7 @@
-package kimspring.splearn.application.required;
+package kimspring.splearn.application.member.required;
 
-import kimspring.splearn.domain.Email;
-import kimspring.splearn.domain.Member;
+import kimspring.splearn.domain.shared.Email;
+import kimspring.splearn.domain.member.Member;
 import org.springframework.data.repository.Repository;
 
 import java.util.Optional;

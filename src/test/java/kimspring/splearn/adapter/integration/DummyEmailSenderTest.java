@@ -1,6 +1,6 @@
 package kimspring.splearn.adapter.integration;
 
-import kimspring.splearn.domain.Email;
+import kimspring.splearn.domain.shared.Email;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.StdIo;
 import org.junitpioneer.jupiter.StdOut;

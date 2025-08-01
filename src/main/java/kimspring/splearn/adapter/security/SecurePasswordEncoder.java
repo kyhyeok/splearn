@@ -1,6 +1,6 @@
 package kimspring.splearn.adapter.security;
 
-import kimspring.splearn.domain.PasswordEncoder;
+import kimspring.splearn.domain.member.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
