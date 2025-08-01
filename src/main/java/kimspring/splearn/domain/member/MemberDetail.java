@@ -1,5 +1,6 @@
 package kimspring.splearn.domain.member;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import kimspring.splearn.domain.AbstractEntity;
@@ -18,7 +19,6 @@ import static org.springframework.util.Assert.isTrue;
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberDetail extends AbstractEntity {
-    @Embedded
     private Profile profile;
 
     private String introduction;

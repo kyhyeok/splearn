@@ -28,7 +28,7 @@ class ProfileTest {
     @Test
     void url() {
         Profile profile = new Profile("kim");
-        
+
         assertThat(profile.url()).isEqualTo("@kim");
     }
 

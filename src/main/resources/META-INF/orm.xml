@@ -44,6 +44,38 @@
         </attributes>
     </entity>
 
+    <entity class="kimspring.splearn.domain.member.MemberDetail">
+        <table name="member_detail">
+            <unique-constraint name="UK_MEMBER_DETAIL_PROFILE_ADDRESS">
+                <column-name>profile_address</column-name>
+            </unique-constraint>
+        </table>
+        <attributes>
+            <embedded name="profile"/>
+
+            <basic name="introduction">
+                <column name="introduction" column-definition="TEXT"/>
+            </basic>
+            <basic name="registeredAt">
+                <column name="registeredAt" nullable="false"/>
+            </basic>
+            <basic name="activatedAt">
+                <column name="activatedAt"/>
+            </basic>
+            <basic name="deactivatedAt">
+                <column name="deactivatedAt"/>
+            </basic>
+        </attributes>
+    </entity>
+
+    <embeddable class="kimspring.splearn.domain.member.Profile">
+        <attributes>
+            <basic name="address">
+                <column name="profile_address" length="20"/>
+            </basic>
+        </attributes>
+    </embeddable>
+
     <embeddable class="kimspring.splearn.domain.shared.Email">
         <attributes>
             <basic name="address">

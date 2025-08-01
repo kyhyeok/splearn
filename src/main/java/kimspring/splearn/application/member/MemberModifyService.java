@@ -5,10 +5,7 @@ import kimspring.splearn.application.member.provided.MemberFinder;
 import kimspring.splearn.application.member.provided.MemberRegister;
 import kimspring.splearn.application.member.required.EmailSender;
 import kimspring.splearn.application.member.required.MemberRepository;
-import kimspring.splearn.domain.member.DuplicateEmailException;
-import kimspring.splearn.domain.member.Member;
-import kimspring.splearn.domain.member.MemberRegisterRequest;
-import kimspring.splearn.domain.member.PasswordEncoder;
+import kimspring.splearn.domain.member.*;
 import kimspring.splearn.domain.shared.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,6 +39,24 @@ public class MemberModifyService implements MemberRegister {
         Member member = memberFinder.find(memberId);
 
         member.activate();
+
+        return memberRepository.save(member);
+    }
+
+    @Override
+    public Member deactivate(Long memberId) {
+        Member member = memberFinder.find(memberId);
+
+        member.deactivate();
+
+        return memberRepository.save(member);
+    }
+
+    @Override
+    public Member updateInfo(Long memberId, MemberInfoUpdateRequest updateRequest) {
+        Member member = memberFinder.find(memberId);
+
+        member.updateInfo(updateRequest);
 
         return memberRepository.save(member);
     }
