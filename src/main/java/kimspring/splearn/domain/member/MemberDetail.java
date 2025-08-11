@@ -1,7 +1,5 @@
 package kimspring.splearn.domain.member;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import kimspring.splearn.domain.AbstractEntity;
 import lombok.AccessLevel;

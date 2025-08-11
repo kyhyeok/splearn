@@ -1,8 +1,6 @@
 package kimspring.splearn.application.member;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import kimspring.splearn.application.member.provided.MemberFinder;
 import kimspring.splearn.application.member.provided.MemberRegister;
 import kimspring.splearn.application.member.required.EmailSender;

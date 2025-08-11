@@ -17,22 +17,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import org.springframework.test.web.servlet.assertj.MvcTestResult;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 
 import static kimspring.splearn.AssertThatUtils.equalsTo;
 import static kimspring.splearn.AssertThatUtils.notNull;
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
 @RequiredArgsConstructor
-public class MemberApiTest {
+class MemberApiTest {
     final MockMvcTester mvcTester;
 
     final ObjectMapper objectMapper;
