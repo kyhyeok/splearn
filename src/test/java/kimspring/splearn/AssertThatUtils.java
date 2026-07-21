@@ -1,6 +1,6 @@
 package kimspring.splearn;
 
-import kimspring.splearn.domain.member.MemberRegisterRequest;
+import kimspring.splearn.application.member.provided.MemberRegisterRequest;
 import org.assertj.core.api.AssertProvider;
 import org.springframework.test.json.JsonPathValueAssert;
 

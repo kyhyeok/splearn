@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kimspring.splearn.application.member.provided.MemberRegister;
 import kimspring.splearn.domain.member.Member;
 import kimspring.splearn.domain.member.MemberFixture;
-import kimspring.splearn.domain.member.MemberRegisterRequest;
+import kimspring.splearn.application.member.provided.MemberRegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

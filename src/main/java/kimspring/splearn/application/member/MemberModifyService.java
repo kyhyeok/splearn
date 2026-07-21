@@ -3,6 +3,7 @@ package kimspring.splearn.application.member;
 import jakarta.transaction.Transactional;
 import kimspring.splearn.application.member.provided.MemberFinder;
 import kimspring.splearn.application.member.provided.MemberRegister;
+import kimspring.splearn.application.member.provided.MemberRegisterRequest;
 import kimspring.splearn.application.member.required.EmailSender;
 import kimspring.splearn.application.member.required.MemberRepository;
 import kimspring.splearn.domain.member.*;
@@ -25,7 +26,7 @@ public class MemberModifyService implements MemberRegister {
     public Member register(MemberRegisterRequest registerRequest) {
         checkDuplicateEmail(registerRequest);
 
-        Member member = Member.register(registerRequest, passwordEncoder);
+        Member member = Member.register(registerRequest.toInfo(), passwordEncoder);
 
         memberRepository.save(member);
 

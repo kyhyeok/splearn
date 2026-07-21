@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import kimspring.splearn.adapter.webapi.dto.MemberRegisterResponse;
 import kimspring.splearn.application.member.provided.MemberRegister;
 import kimspring.splearn.domain.member.Member;
-import kimspring.splearn.domain.member.MemberRegisterRequest;
+import kimspring.splearn.application.member.provided.MemberRegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

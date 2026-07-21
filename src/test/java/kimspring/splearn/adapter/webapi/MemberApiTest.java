@@ -7,7 +7,7 @@ import kimspring.splearn.application.member.provided.MemberRegister;
 import kimspring.splearn.application.member.required.MemberRepository;
 import kimspring.splearn.domain.member.Member;
 import kimspring.splearn.domain.member.MemberFixture;
-import kimspring.splearn.domain.member.MemberRegisterRequest;
+import kimspring.splearn.application.member.provided.MemberRegisterRequest;
 import kimspring.splearn.domain.member.MemberStatus;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
