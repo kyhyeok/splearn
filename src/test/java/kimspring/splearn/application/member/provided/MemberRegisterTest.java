@@ -1,7 +1,7 @@
 package kimspring.splearn.application.member.provided;
 
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import jakarta.validation.ConstraintViolationException;
 import kimspring.splearn.SplearnTestConfiguration;
 import kimspring.splearn.domain.member.*;

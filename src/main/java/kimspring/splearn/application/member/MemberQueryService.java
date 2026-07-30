@@ -1,6 +1,6 @@
 package kimspring.splearn.application.member;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import kimspring.splearn.application.member.provided.MemberFinder;
 import kimspring.splearn.application.member.required.MemberRepository;
 import kimspring.splearn.domain.member.Member;

@@ -3,7 +3,7 @@ package kimspring.splearn.application.member;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import kimspring.splearn.application.member.provided.LoginFailedException;
 import kimspring.splearn.application.member.provided.MemberAuthenticator;
 import kimspring.splearn.application.member.provided.MemberLoginRequest;
