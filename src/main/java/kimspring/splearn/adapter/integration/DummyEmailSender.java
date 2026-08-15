@@ -2,6 +2,7 @@ package kimspring.splearn.adapter.integration;
 
 import kimspring.splearn.application.member.required.EmailSender;
 import kimspring.splearn.domain.shared.Email;
+
 import org.springframework.context.annotation.Fallback;
 import org.springframework.stereotype.Component;
 
