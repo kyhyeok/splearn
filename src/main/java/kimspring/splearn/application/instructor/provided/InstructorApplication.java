@@ -9,7 +9,7 @@ import kimspring.splearn.domain.instructor.Instructor;
 public interface InstructorApplication {
     Instructor apply(@Valid InstructorApplyRequest applyRequest);
 
-    Instructor approve(Long memberId);
+    Instructor approve(Long instructorId);
 
-    Instructor reject(Long memberId);
+    Instructor reject(Long instructorId);
 }
