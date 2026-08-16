@@ -1,14 +1,13 @@
 package kimspring.splearn.application.instructor.provided;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
 import kimspring.splearn.application.instructor.required.InstructorRepository;
 import kimspring.splearn.application.member.required.MemberRepository;
 import kimspring.splearn.domain.instructor.Instructor;
+import kimspring.splearn.domain.instructor.InstructorFixture;
 import kimspring.splearn.domain.instructor.InstructorStatus;
 import kimspring.splearn.domain.member.Member;
 import kimspring.splearn.domain.member.MemberFixture;
@@ -18,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @Transactional
 @RequiredArgsConstructor
 class InstructorApplicationTest {
@@ -31,7 +29,7 @@ class InstructorApplicationTest {
         Member member = MemberFixture.createActiveMember();
         memberRepository.save(member);
 
-        Instructor instructor = instructorApplication.apply(new InstructorApplyRequest(member.getId()));
+        Instructor instructor = instructorApplication.apply(InstructorFixture.createApplyRequest(member));
 
         assertThat(instructor).isNotNull();
         assertThat(instructor.getStatus()).isEqualTo(InstructorStatus.PENDING);
@@ -44,10 +42,11 @@ class InstructorApplicationTest {
         Member member = MemberFixture.createActiveMember();
         memberRepository.save(member);
 
-        instructorApplication.apply(new InstructorApplyRequest(member.getId()));
+        instructorApplication.apply(InstructorFixture.createApplyRequest(member));
 
-        assertThatThrownBy(() -> instructorApplication.apply(new InstructorApplyRequest(member.getId()))).isInstanceOf(
-            DataIntegrityViolationException.class);
+        assertThatThrownBy(
+            () -> instructorApplication.apply(InstructorFixture.createApplyRequest(member))).isInstanceOf(
+            DuplicationInstructorApplicationException.class);
     }
 
     @Test

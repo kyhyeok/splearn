@@ -1,6 +1,5 @@
 package kimspring.splearn.domain.instructor;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import kimspring.splearn.domain.member.Member;
@@ -25,14 +24,12 @@ class InstructorTest {
     void applyFailedMemberNotActive() {
         Member member = MemberFixture.createMember(); // PENDING
 
-        assertThatThrownBy(() -> Instructor.apply(member))
-            .isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> Instructor.apply(member)).isInstanceOf(IllegalStateException.class);
     }
 
     @Test
     void approve() {
-        Member member = MemberFixture.createActiveMember();
-        Instructor instructor = Instructor.apply(member);
+        Instructor instructor = InstructorFixture.createInstructor();
 
         instructor.approve();
 
@@ -41,18 +38,14 @@ class InstructorTest {
 
     @Test
     void approveFailed() {
-        Member member = MemberFixture.createActiveMember();
-        Instructor instructor = Instructor.apply(member);
-        instructor.approve();
+        Instructor instructor = InstructorFixture.createActiveInstructor();
 
-        assertThatThrownBy(() -> instructor.approve())
-                  .isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> instructor.approve()).isInstanceOf(IllegalStateException.class);
     }
 
     @Test
     void reject() {
-        Member member = MemberFixture.createActiveMember();
-        Instructor instructor = Instructor.apply(member);
+        Instructor instructor = InstructorFixture.createInstructor();
 
         instructor.reject();
 
@@ -61,12 +54,10 @@ class InstructorTest {
 
     @Test
     void rejectFailed() {
-        Member member = MemberFixture.createActiveMember();
-        Instructor instructor = Instructor.apply(member);
+        Instructor instructor = InstructorFixture.createInstructor();
         instructor.reject();
 
-        assertThatThrownBy(() -> instructor.reject())
-            .isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> instructor.reject()).isInstanceOf(IllegalStateException.class);
     }
 
     @Test
@@ -84,8 +75,7 @@ class InstructorTest {
         Member member = MemberFixture.createActiveMember();
         Instructor instructor = Instructor.apply(member);
 
-        assertThatThrownBy(() -> instructor.ensureActive())
-            .isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> instructor.ensureActive()).isInstanceOf(IllegalStateException.class);
 
         instructor.approve();
 

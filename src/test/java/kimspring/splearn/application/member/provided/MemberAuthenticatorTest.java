@@ -5,57 +5,62 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-
 import org.springframework.transaction.annotation.Transactional;
+
 import kimspring.splearn.SplearnTestConfiguration;
-import kimspring.splearn.application.member.required.MemberRepository;
 import kimspring.splearn.domain.member.MemberFixture;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
 @Import(SplearnTestConfiguration.class)
 class MemberAuthenticatorTest {
-  @Autowired
-  private MemberAuthenticator memberAuthenticator;
+    @Autowired
+    private MemberAuthenticator memberAuthenticator;
 
-  @Autowired
-  private MemberRegister memberRegister;
+    @Autowired
+    private MemberRegister memberRegister;
 
-  @Test
-  void login() {
-    var registerRequest = MemberFixture.createMemberRegisterRequest();
-    memberRegister.register(registerRequest).activate();
+    @Test
+    void login() {
+        var registerRequest = MemberFixture.createMemberRegisterRequest();
+        var member = memberRegister.register(registerRequest);
+        member.activate();
 
-    var member = memberAuthenticator.login(new MemberLoginRequest(registerRequest.email(), registerRequest.password()));
-  }
+        var loggedInMember =
+            memberAuthenticator.login(new MemberLoginRequest(registerRequest.email(), registerRequest.password()));
 
-  @Test
-  void loginFailedNotActive() {
-    var registerRequest = MemberFixture.createMemberRegisterRequest();
-    memberRegister.register(registerRequest);
+        assertThat(loggedInMember).isEqualTo(member);
+    }
 
-    Assertions.assertThatThrownBy(
-                  () -> memberAuthenticator.login(new MemberLoginRequest(registerRequest.email(), registerRequest.password())))
-              .isInstanceOf(LoginFailedException.class);
-  }
+    @Test
+    void loginFailedNotActive() {
+        var registerRequest = MemberFixture.createMemberRegisterRequest();
+        memberRegister.register(registerRequest);
 
-  @Test
-  void loginFailedEmailNotExist() {
-    var registerRequest = MemberFixture.createMemberRegisterRequest();
-    memberRegister.register(registerRequest).activate();
+        Assertions.assertThatThrownBy(() -> memberAuthenticator.login(
+                      new MemberLoginRequest(registerRequest.email(), registerRequest.password())))
+                  .isInstanceOf(LoginFailedException.class);
+    }
 
-    Assertions.assertThatThrownBy(
-                  () -> memberAuthenticator.login(new MemberLoginRequest("notexist@email.com", registerRequest.password())))
-              .isInstanceOf(LoginFailedException.class);
-  }
+    @Test
+    void loginFailedEmailNotExist() {
+        var registerRequest = MemberFixture.createMemberRegisterRequest();
+        memberRegister.register(registerRequest).activate();
 
-  @Test
-  void loginFailedWrongPassword() {
-    var registerRequest = MemberFixture.createMemberRegisterRequest();
-    memberRegister.register(registerRequest).activate();
+        Assertions.assertThatThrownBy(
+                      () -> memberAuthenticator.login(new MemberLoginRequest("notexist@email.com", registerRequest.password())))
+                  .isInstanceOf(LoginFailedException.class);
+    }
 
-    Assertions.assertThatThrownBy(
-                  () -> memberAuthenticator.login(new MemberLoginRequest(registerRequest.email(), "wrongpassword")))
-              .isInstanceOf(LoginFailedException.class);
-  }
+    @Test
+    void loginFailedWrongPassword() {
+        var registerRequest = MemberFixture.createMemberRegisterRequest();
+        memberRegister.register(registerRequest).activate();
+
+        Assertions.assertThatThrownBy(
+                      () -> memberAuthenticator.login(new MemberLoginRequest(registerRequest.email(), "wrongpassword")))
+                  .isInstanceOf(LoginFailedException.class);
+    }
 }
