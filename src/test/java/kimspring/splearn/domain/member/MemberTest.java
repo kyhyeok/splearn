@@ -10,14 +10,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class MemberTest {
     Member member;
-
     PasswordEncoder passwordEncoder;
+    MemberRegisterInfo registerRequest;
 
     @BeforeEach
     void setUp() {
         this.passwordEncoder = createPasswordEncoder();
-
-        member = Member.register(createMemberRegisterRequest().toInfo(), passwordEncoder);
+        registerRequest = createMemberRegisterRequest().toInfo();
+        member = Member.register(registerRequest, passwordEncoder);
     }
 
     @Test
@@ -68,7 +68,7 @@ class MemberTest {
 
     @Test
     void verifyPassword() {
-        assertThat(member.verifyPassword("verysecret", passwordEncoder)).isTrue();
+        assertThat(member.verifyPassword(registerRequest.password(), passwordEncoder)).isTrue();
         assertThat(member.verifyPassword("hello", passwordEncoder)).isFalse();
     }
 

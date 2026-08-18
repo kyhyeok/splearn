@@ -47,6 +47,7 @@ dependencies {
     testImplementation("org.junit-pioneer:junit-pioneer:2.3.0")
     testImplementation("org.mockito:mockito-core:5.23.0")
     testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
+    testImplementation("org.instancio:instancio-core:6.0.0-RC2")
     mockitoAgent("org.mockito:mockito-core:5.23.0") { isTransitive = false }
 }
 

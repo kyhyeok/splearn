@@ -1,16 +1,23 @@
 package kimspring.splearn.domain.member;
 
+import org.instancio.Instancio;
+import org.instancio.Select;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import kimspring.splearn.application.member.provided.MemberRegisterRequest;
 
+import static org.instancio.Instancio.gen;
+import static org.instancio.Select.field;
+
 public class MemberFixture {
     public static MemberRegisterRequest createMemberRegisterRequest(String email) {
-        return new MemberRegisterRequest(email, "KimHyeok", "verysecret");
+        return Instancio.of(MemberRegisterRequest.class)
+                        .set(field(MemberRegisterRequest::email), email)
+                        .create();
     }
 
     public static MemberRegisterRequest createMemberRegisterRequest() {
-        return createMemberRegisterRequest("kim@gmail.com");
+        return createMemberRegisterRequest(gen().net().email().get());
     }
 
     public static PasswordEncoder createPasswordEncoder() {
