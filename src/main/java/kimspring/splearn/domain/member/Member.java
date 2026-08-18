@@ -1,18 +1,17 @@
 package kimspring.splearn.domain.member;
 
-import jakarta.persistence.CascadeType;
+import org.hibernate.annotations.NaturalId;
+
+import java.util.Objects;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToOne;
 import kimspring.splearn.domain.AbstractEntity;
+import kimspring.splearn.domain.instructor.Instructor;
 import kimspring.splearn.domain.shared.Email;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.NaturalId;
-
-import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 import static org.springframework.util.Assert.state;
@@ -31,7 +30,6 @@ public class Member extends AbstractEntity {
 
     private MemberStatus status;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private MemberDetail detail;
 
     public static Member register(MemberRegisterInfo registerRequest, PasswordEncoder passwordEncoder) {
