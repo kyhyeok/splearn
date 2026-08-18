@@ -1,26 +1,17 @@
 package kimspring.splearn.application.member.provided;
 
+import org.junit.jupiter.api.Test;
+
 import jakarta.persistence.EntityManager;
-import org.springframework.transaction.annotation.Transactional;
-import kimspring.splearn.SplearnTestConfiguration;
 import kimspring.splearn.domain.member.Member;
 import kimspring.splearn.domain.member.MemberFixture;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
+import kimspring.splearn.support.stereotype.ApplicationServiceTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@Transactional
-@SpringBootTest
-@Import(SplearnTestConfiguration.class)
-record MemberFinderTest(
-        MemberFinder memberFinder,
-        MemberRegister memberRegister,
-        EntityManager entityManager
-) {
-
+@ApplicationServiceTest
+record MemberFinderTest(MemberFinder memberFinder, MemberRegister memberRegister, EntityManager entityManager) {
     @Test
     void find() {
         Member member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
@@ -34,7 +25,6 @@ record MemberFinderTest(
 
     @Test
     void findFail() {
-        assertThatThrownBy(() -> memberFinder.find(9999L))
-            .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> memberFinder.find(9999L)).isInstanceOf(IllegalArgumentException.class);
     }
 }

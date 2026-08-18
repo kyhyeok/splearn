@@ -1,17 +1,14 @@
 package kimspring.splearn.application.instructor;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Optional;
 
 import kimspring.splearn.application.instructor.provided.InstructorFinder;
 import kimspring.splearn.application.instructor.required.InstructorRepository;
 import kimspring.splearn.domain.instructor.Instructor;
+import kimspring.splearn.support.stereotype.ApplicationService;
 import lombok.RequiredArgsConstructor;
 
-@Service
-@Transactional
+@ApplicationService
 @RequiredArgsConstructor
 public class InstructorQueryService implements InstructorFinder {
     private final InstructorRepository instructorRepository;

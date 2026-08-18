@@ -1,21 +1,22 @@
 package kimspring.splearn.application.member.provided;
 
-import jakarta.persistence.EntityManager;
-import org.springframework.transaction.annotation.Transactional;
-import jakarta.validation.ConstraintViolationException;
-import kimspring.splearn.SplearnTestConfiguration;
-import kimspring.splearn.domain.member.*;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
+
+import jakarta.persistence.EntityManager;
+import jakarta.validation.ConstraintViolationException;
+import kimspring.splearn.domain.member.DuplicateEmailException;
+import kimspring.splearn.domain.member.DuplicateProfileException;
+import kimspring.splearn.domain.member.Member;
+import kimspring.splearn.domain.member.MemberFixture;
+import kimspring.splearn.domain.member.MemberInfoUpdateRequest;
+import kimspring.splearn.domain.member.MemberStatus;
+import kimspring.splearn.support.stereotype.ApplicationServiceTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
-@SpringBootTest
-@Transactional
-@Import(SplearnTestConfiguration.class)
+@ApplicationServiceTest
 record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityManager) {
     @Test
     void register() {
@@ -29,8 +30,8 @@ record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityMan
     void duplicateEmailFail() {
         memberRegister.register(MemberFixture.createMemberRegisterRequest());
 
-        assertThatThrownBy(() -> memberRegister.register(MemberFixture.createMemberRegisterRequest()))
-                .isInstanceOf(DuplicateEmailException.class);
+        assertThatThrownBy(() -> memberRegister.register(MemberFixture.createMemberRegisterRequest())).isInstanceOf(
+            DuplicateEmailException.class);
     }
 
     @Test
@@ -84,8 +85,8 @@ record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityMan
         entityManager.clear();
 
         // member2는 기존의 member와 같은 프로필 주소를 사용할 수 없다
-        assertThatThrownBy(() -> memberRegister.updateInfo(member2.getId(), new MemberInfoUpdateRequest("Kimmy", "kim001", "자기소개임")))
-                .isInstanceOf(DuplicateProfileException.class);
+        assertThatThrownBy(() -> memberRegister.updateInfo(member2.getId(),
+            new MemberInfoUpdateRequest("Kimmy", "kim001", "자기소개임"))).isInstanceOf(DuplicateProfileException.class);
 
         // 다른 프로필 주소로는 변경 가능
         memberRegister.updateInfo(member2.getId(), new MemberInfoUpdateRequest("Kimmy", "kim002", "자기소개임"));
@@ -94,10 +95,8 @@ record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityMan
         memberRegister.updateInfo(member.getId(), new MemberInfoUpdateRequest("Kimmy", "kim001", "자기소개임"));
 
         // 프로필 주소 중복은 허용하지 않음
-        assertThatThrownBy(() ->
-            memberRegister.updateInfo(member.getId(),
-                new MemberInfoUpdateRequest("Kimmy", "kim002", "자기소개임")))
-            .isInstanceOf(DuplicateProfileException.class);
+        assertThatThrownBy(() -> memberRegister.updateInfo(member.getId(),
+            new MemberInfoUpdateRequest("Kimmy", "kim002", "자기소개임"))).isInstanceOf(DuplicateProfileException.class);
 
         // 프로필 주소를 제거하는 것도 가능
         memberRegister.updateInfo(member.getId(), new MemberInfoUpdateRequest("Kimmy", "", "자기소개임"));
@@ -114,8 +113,7 @@ record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityMan
     }
 
     private void checkValidation(MemberRegisterRequest invalid) {
-        assertThatThrownBy(() -> memberRegister.register(invalid))
-                .isInstanceOf(ConstraintViolationException.class);
+        assertThatThrownBy(() -> memberRegister.register(invalid)).isInstanceOf(ConstraintViolationException.class);
     }
 
     private Member registerMember() {

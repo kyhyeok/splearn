@@ -1,12 +1,13 @@
 package kimspring.splearn.application.member.required;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.DataIntegrityViolationException;
+
 import jakarta.persistence.EntityManager;
 import kimspring.splearn.domain.member.Member;
 import kimspring.splearn.domain.member.MemberStatus;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.dao.DataIntegrityViolationException;
+import lombok.RequiredArgsConstructor;
 
 import static kimspring.splearn.domain.member.MemberFixture.createMemberRegisterRequest;
 import static kimspring.splearn.domain.member.MemberFixture.createPasswordEncoder;
@@ -14,12 +15,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJpaTest
+@RequiredArgsConstructor
 class MemberRepositoryTest {
-    @Autowired
-    private MemberRepository memberRepository;
+    final MemberRepository memberRepository;
 
-    @Autowired
-    private EntityManager entityManager;
+    final EntityManager entityManager;
 
     @Test
     void registerMember() {
@@ -45,7 +45,6 @@ class MemberRepositoryTest {
         memberRepository.save(member);
 
         Member member2 = Member.register(createMemberRegisterRequest().toInfo(), createPasswordEncoder());
-        assertThatThrownBy(() -> memberRepository.save(member2))
-                .isInstanceOf(DataIntegrityViolationException.class);
+        assertThatThrownBy(() -> memberRepository.save(member2)).isInstanceOf(DataIntegrityViolationException.class);
     }
 }

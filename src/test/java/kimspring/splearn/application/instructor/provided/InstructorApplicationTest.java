@@ -1,8 +1,6 @@
 package kimspring.splearn.application.instructor.provided;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import kimspring.splearn.application.instructor.required.InstructorRepository;
 import kimspring.splearn.application.member.required.MemberRepository;
@@ -11,13 +9,13 @@ import kimspring.splearn.domain.instructor.InstructorFixture;
 import kimspring.splearn.domain.instructor.InstructorStatus;
 import kimspring.splearn.domain.member.Member;
 import kimspring.splearn.domain.member.MemberFixture;
+import kimspring.splearn.support.stereotype.ApplicationServiceTest;
 import lombok.RequiredArgsConstructor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest
-@Transactional
+@ApplicationServiceTest
 @RequiredArgsConstructor
 class InstructorApplicationTest {
     final InstructorApplication instructorApplication;

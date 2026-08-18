@@ -1,9 +1,5 @@
 package kimspring.splearn.application.instructor;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
-
 import kimspring.splearn.application.instructor.provided.DuplicationInstructorApplicationException;
 import kimspring.splearn.application.instructor.provided.InstructorApplication;
 import kimspring.splearn.application.instructor.provided.InstructorApplyRequest;
@@ -12,11 +8,10 @@ import kimspring.splearn.application.instructor.required.InstructorRepository;
 import kimspring.splearn.application.member.provided.MemberFinder;
 import kimspring.splearn.domain.instructor.Instructor;
 import kimspring.splearn.domain.member.Member;
+import kimspring.splearn.support.stereotype.ValidatedApplicationService;
 import lombok.RequiredArgsConstructor;
 
-@Service
-@Transactional
-@Validated
+@ValidatedApplicationService
 @RequiredArgsConstructor
 public class InstructorModifyService implements InstructorApplication {
     private final InstructorRepository instructorRepository;

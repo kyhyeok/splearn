@@ -1,19 +1,17 @@
 package kimspring.splearn.application.instructor.provided;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import kimspring.splearn.application.member.provided.MemberRegister;
 import kimspring.splearn.domain.instructor.Instructor;
 import kimspring.splearn.domain.member.Member;
 import kimspring.splearn.domain.member.MemberFixture;
+import kimspring.splearn.support.stereotype.ApplicationServiceTest;
 import lombok.RequiredArgsConstructor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@Transactional
+@ApplicationServiceTest
 @RequiredArgsConstructor
 class InstructorFinderTest {
     final InstructorFinder instructorFinder;
