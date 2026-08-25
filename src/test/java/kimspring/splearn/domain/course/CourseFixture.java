@@ -4,15 +4,17 @@ import org.instancio.Instancio;
 
 import java.time.LocalDateTime;
 
+import jakarta.annotation.Nullable;
+import kimspring.splearn.domain.instructor.Instructor;
 import kimspring.splearn.domain.instructor.InstructorFixture;
 
+import static org.instancio.Instancio.gen;
 import static org.instancio.Select.field;
 
 public class CourseFixture {
-    public static Course createCourse() {
-        var instructor = InstructorFixture.createActiveInstructor();
-
+    public static Course createCourse(@Nullable Instructor instructor, @Nullable String title) {
         CourseDetail detail = Instancio.of(CourseDetail.class)
+                                       .ignore(field(CourseDetail::getId))
                                        .generate(field(CourseDetail::getDescription),
                                            gen -> gen.string().maxLength(500).nullable())
                                        .set(field(CourseDetail::getCreatedAt), LocalDateTime.now())
@@ -20,10 +22,16 @@ public class CourseFixture {
 
         return Instancio.of(Course.class)
                         .ignore(field(Course::getId))
-                        .set(field(Course::getInstructor), instructor)
-                        .generate(field(Course::getTitle), gen -> gen.string().maxLength(100).minLength(2))
+                        .set(field(Course::getInstructor),
+                            instructor == null ? InstructorFixture.createActiveInstructor() : instructor)
+                        .set(field(Course::getTitle),
+                            title == null ? gen().string().maxLength(100).minLength(100).get() : title)
                         .set(field(Course::getStatus), CourseStatus.DRAFT)
                         .set(field(Course::getDetail), detail)
                         .create();
+    }
+
+    public static Course createCourse() {
+        return createCourse(null, null);
     }
 }

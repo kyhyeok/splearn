@@ -36,7 +36,7 @@
             </basic>
             <one-to-one name="detail" fetch="LAZY">
                 <cascade>
-                    <cascade-all />
+                    <cascade-all/>
                 </cascade>
             </one-to-one>
             <embedded name="email">
@@ -69,6 +69,11 @@
     </entity>
 
     <entity class="kimspring.splearn.domain.instructor.Instructor">
+        <table name="instructor">
+            <unique-constraint name="UK_INSTRUCTOR_MEMBER_ID">
+                <column-name>member_id</column-name>
+            </unique-constraint>
+        </table>
         <attributes>
             <basic name="status">
                 <column name="status" length="20"/>
@@ -78,6 +83,12 @@
     </entity>
 
     <entity class="kimspring.splearn.domain.course.Course">
+        <table name="course">
+            <unique-constraint name="UK_INSTRUCTOR_TITLE">
+                <column-name>instructorId</column-name>
+                <column-name>title</column-name>
+            </unique-constraint>
+        </table>
         <attributes>
             <basic name="title">
                 <column name="title" nullable="false" length="100"/>
@@ -86,6 +97,11 @@
                 <column name="status" nullable="false" length="20"/>
                 <enumerated>STRING</enumerated>
             </basic>
+            <one-to-one name="detail" fetch="LAZY">
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-one>
         </attributes>
     </entity>
 
