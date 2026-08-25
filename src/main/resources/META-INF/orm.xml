@@ -68,6 +68,35 @@
         </attributes>
     </entity>
 
+    <entity class="kimspring.splearn.domain.instructor.Instructor">
+        <attributes>
+            <basic name="status">
+                <column name="status" length="20"/>
+                <enumerated>STRING</enumerated>
+            </basic>
+        </attributes>
+    </entity>
+
+    <entity class="kimspring.splearn.domain.course.Course">
+        <attributes>
+            <basic name="title">
+                <column name="title" nullable="false" length="100"/>
+            </basic>
+            <basic name="status">
+                <column name="status" nullable="false" length="20"/>
+                <enumerated>STRING</enumerated>
+            </basic>
+        </attributes>
+    </entity>
+
+    <entity class="kimspring.splearn.domain.course.CourseDetail">
+        <attributes>
+            <basic name="description">
+                <column name="description" length="512"/>
+            </basic>
+        </attributes>
+    </entity>
+
     <embeddable class="kimspring.splearn.domain.member.Profile">
         <attributes>
             <basic name="address">

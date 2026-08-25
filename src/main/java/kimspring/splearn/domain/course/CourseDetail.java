@@ -2,7 +2,6 @@ package kimspring.splearn.domain.course;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import kimspring.splearn.domain.AbstractEntity;
 import lombok.AccessLevel;
@@ -15,25 +14,28 @@ import lombok.ToString;
 @ToString(callSuper = true, exclude = {})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CourseDetail extends AbstractEntity {
-    @Column(length = 512)
-    String description;
+    private String description;
 
-    LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
-    LocalDateTime publishedAt;
+    private LocalDateTime publishedAt;
 
-    LocalDateTime archivedAt;
+    private LocalDateTime archivedAt;
 
-    public CourseDetail(String description) {
+    CourseDetail(String description) {
         this.description = description;
         this.createdAt = LocalDateTime.now();
     }
 
-    public void publish() {
+    void publish() {
         this.publishedAt = LocalDateTime.now();
     }
 
-    public void archive() {
+    void archive() {
         this.archivedAt = LocalDateTime.now();
+    }
+
+    void updateInfo(CourseUpdateInfo updateInfo) {
+        this.description = updateInfo.description();
     }
 }

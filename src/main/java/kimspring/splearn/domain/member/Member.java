@@ -5,6 +5,7 @@ import org.hibernate.annotations.NaturalId;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import kimspring.splearn.domain.AbstractEntity;
 import kimspring.splearn.domain.instructor.Instructor;
 import kimspring.splearn.domain.shared.Email;
@@ -30,6 +31,7 @@ public class Member extends AbstractEntity {
 
     private MemberStatus status;
 
+    @OneToOne
     private MemberDetail detail;
 
     public static Member register(MemberRegisterInfo registerRequest, PasswordEncoder passwordEncoder) {

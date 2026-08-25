@@ -14,7 +14,7 @@ public class CourseFixture {
 
         CourseDetail detail = Instancio.of(CourseDetail.class)
                                        .generate(field(CourseDetail::getDescription),
-                                           gen -> gen.string().maxLength(100).nullable())
+                                           gen -> gen.string().maxLength(500).nullable())
                                        .set(field(CourseDetail::getCreatedAt), LocalDateTime.now())
                                        .create();
 
