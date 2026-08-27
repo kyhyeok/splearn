@@ -4,6 +4,7 @@ import kimspring.splearn.application.course.provided.CourseCreateRequest;
 import kimspring.splearn.application.course.provided.CourseCreator;
 import kimspring.splearn.application.course.provided.CourseFinder;
 import kimspring.splearn.application.course.provided.CourseInfoUpdateRequest;
+import kimspring.splearn.application.course.provided.CoursePublisher;
 import kimspring.splearn.application.course.provided.CourseValidator;
 import kimspring.splearn.application.course.required.CourseRepository;
 import kimspring.splearn.application.instructor.provided.InstructorFinder;
@@ -15,14 +16,14 @@ import lombok.RequiredArgsConstructor;
 
 @ValidatedApplicationService
 @RequiredArgsConstructor
-public class CourseModifyService implements CourseCreator {
+public class CourseModifyService implements CourseCreator, CoursePublisher {
     private final CourseRepository courseRepository;
     private final CourseFinder courseFinder;
     private final CourseValidator courseValidator;
     private final InstructorFinder instructorFinder;
 
     @Override
-    public Course course(CourseCreateRequest createRequest) throws ValidationException {
+    public Course create(CourseCreateRequest createRequest) throws ValidationException {
         Instructor instructor = instructorFinder.find(createRequest.instructorId());
 
         courseValidator.validateForCreate(instructor, createRequest);
@@ -39,6 +40,39 @@ public class CourseModifyService implements CourseCreator {
         courseValidator.validateForUpdate(course, infoUpdateRequest);
 
         course.updateInfo(infoUpdateRequest.toInfo());
+
+        return courseRepository.save(course);
+    }
+
+    @Override
+    public Course submitForReview(Long courseId) {
+        Course course = courseFinder.find(courseId);
+
+        courseValidator.validateForReview(course);
+
+        course.submitForReview();;
+
+        return courseRepository.save(course);
+    }
+
+    @Override
+    public Course publish(Long courseId) {
+        Course course = courseFinder.find(courseId);
+
+        courseValidator.validateForPublish(course);
+
+        course.publish();;
+
+        return courseRepository.save(course);
+    }
+
+    @Override
+    public Course archive(Long courseId) {
+        Course course = courseFinder.find(courseId);
+
+        courseValidator.validateForArchive(course);
+
+        course.archive();;
 
         return courseRepository.save(course);
     }

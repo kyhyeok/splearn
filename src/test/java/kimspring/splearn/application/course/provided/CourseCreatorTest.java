@@ -20,14 +20,14 @@ class CourseCreatorTest extends BaseApplicationServiceTest {
     void create() {
         prepareInstructor();
 
-        Course course = courseCreator.course(CourseFixture.createCourseCreateRequest(instructor.getId(), null));
+        Course course = courseCreator.create(CourseFixture.createCourseCreateRequest(instructor.getId(), null));
 
         assertThat(course.getId()).isNotNull();
     }
     @Test
     void updateInfo() {
         prepareInstructor();
-        Course course = courseCreator.course(CourseFixture.createCourseCreateRequest(instructor.getId(), null));
+        Course course = courseCreator.create(CourseFixture.createCourseCreateRequest(instructor.getId(), null));
 
         Course updated = courseCreator.updateInfo(course.getId(), CourseFixture.createCourseInfoUpdateRequest("Updated"));
 

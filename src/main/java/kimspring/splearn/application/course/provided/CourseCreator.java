@@ -8,7 +8,7 @@ import kimspring.splearn.support.exception.ValidationException;
  * 강의를 준비하는 작업
  */
 public interface CourseCreator {
-    Course course(@Valid CourseCreateRequest createRequest) throws ValidationException;
+    Course create(@Valid CourseCreateRequest createRequest) throws ValidationException;
 
     Course updateInfo(Long courseId, @Valid CourseInfoUpdateRequest infoUpdateRequest) throws ValidationException;
 }
