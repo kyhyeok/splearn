@@ -5,6 +5,8 @@ import org.instancio.Instancio;
 import java.time.LocalDateTime;
 
 import jakarta.annotation.Nullable;
+import kimspring.splearn.application.course.provided.CourseCreateRequest;
+import kimspring.splearn.application.course.provided.CourseInfoUpdateRequest;
 import kimspring.splearn.domain.instructor.Instructor;
 import kimspring.splearn.domain.instructor.InstructorFixture;
 
@@ -33,5 +35,24 @@ public class CourseFixture {
 
     public static Course createCourse() {
         return createCourse(null, null);
+    }
+
+    public static CourseCreateRequest createCourseCreateRequest(Long instructorId, @Nullable String title) {
+        return Instancio.of(CourseCreateRequest.class)
+                        .set(field(CourseCreateRequest::instructorId), instructorId)
+                        .set(field(CourseCreateRequest::title),
+                            title == null ? gen().string().maxLength(100).minLength(100).get() : title)
+                        .generate(field(CourseCreateRequest::description),
+                            gen -> gen.string().maxLength(500).nullable())
+                        .create();
+    }
+
+    public static CourseInfoUpdateRequest createCourseInfoUpdateRequest(@Nullable String title) {
+        return Instancio.of(CourseInfoUpdateRequest.class)
+                        .set(field(CourseInfoUpdateRequest::title),
+                            title == null ? gen().string().maxLength(100).minLength(100).get() : title)
+                        .generate(field(CourseInfoUpdateRequest::description),
+                            gen -> gen.string().maxLength(500).nullable())
+                        .create();
     }
 }

@@ -20,12 +20,12 @@ class CourseValidatorTest extends BaseApplicationServiceTest {
     final CourseRepository courseRepository;
 
     @Test
-    void titleDuplication() {
+    void titleDuplicationForCreate() {
         var instructor1 = prepareInstructor();
         var instructor2 = prepareInstructor();
 
-        Course course1 = courseRepository.save(CourseFixture.createCourse(instructor1, "Clean Spring"));
-        Course course2 = courseRepository.save(CourseFixture.createCourse(instructor2, "Clean Code"));
+        courseRepository.save(CourseFixture.createCourse(instructor1, "Clean Spring"));
+        courseRepository.save(CourseFixture.createCourse(instructor2, "Clean Code"));
 
         // instructor1, 중복되지 않는 제목 - OK
         courseValidator.validateForCreate(instructor1, new CourseCreateRequest(instructor1.getId(), "Spring 7", null));
@@ -40,4 +40,24 @@ class CourseValidatorTest extends BaseApplicationServiceTest {
             new CourseCreateRequest(instructor2.getId(), "Clean Spring", null));
     }
 
+    @Test
+    void titleDuplicationForUpdate() {
+        var instructor1 = prepareInstructor();
+        var instructor2 = prepareInstructor();
+
+        Course course1_1 = courseRepository.save(CourseFixture.createCourse(instructor1, "Clean Spring"));
+        Course course1_2 = courseRepository.save(CourseFixture.createCourse(instructor1, "Clean Code"));
+        Course course2 = courseRepository.save(CourseFixture.createCourse(instructor2, "Clean Spring"));
+
+        // title 변경 없이 update - OK
+        courseValidator.validateForUpdate(course1_1, CourseFixture.createCourseInfoUpdateRequest(course1_1.getTitle()));
+
+        // title 변경하는데 중복 발생 - FAIL
+
+        assertThatThrownBy(() -> courseValidator.validateForUpdate(course1_1,
+            CourseFixture.createCourseInfoUpdateRequest(course1_2.getTitle()))).isInstanceOfSatisfying(
+            ValidationException.class, e -> assertThat(e.getErrors()).hasSize(1));
+
+
+    }
 }
