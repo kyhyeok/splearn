@@ -7,21 +7,20 @@ import kimspring.splearn.domain.instructor.Instructor;
 import kimspring.splearn.domain.member.Member;
 import kimspring.splearn.domain.member.MemberFixture;
 import kimspring.splearn.support.stereotype.ApplicationServiceTest;
+import kimspring.splearn.support.test.BaseApplicationServiceTest;
 import lombok.RequiredArgsConstructor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ApplicationServiceTest
 @RequiredArgsConstructor
-class InstructorFinderTest {
+class InstructorFinderTest extends BaseApplicationServiceTest {
     final InstructorFinder instructorFinder;
     final InstructorApplication instructorApplication;
-    final MemberRegister memberRegister;
 
     @Test
     void findByMember() {
-        Member member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
-        member = memberRegister.activate(member.getId());
+        prepareMember();
 
         Instructor instructor = instructorApplication.apply(new InstructorApplyRequest(member.getId()));
 

@@ -3,13 +3,11 @@ package kimspring.splearn.application.instructor.provided;
 import org.junit.jupiter.api.Test;
 
 import kimspring.splearn.application.instructor.required.InstructorRepository;
-import kimspring.splearn.application.member.required.MemberRepository;
 import kimspring.splearn.domain.instructor.Instructor;
 import kimspring.splearn.domain.instructor.InstructorFixture;
 import kimspring.splearn.domain.instructor.InstructorStatus;
-import kimspring.splearn.domain.member.Member;
-import kimspring.splearn.domain.member.MemberFixture;
 import kimspring.splearn.support.stereotype.ApplicationServiceTest;
+import kimspring.splearn.support.test.BaseApplicationServiceTest;
 import lombok.RequiredArgsConstructor;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,15 +15,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ApplicationServiceTest
 @RequiredArgsConstructor
-class InstructorApplicationTest {
+class InstructorApplicationTest extends BaseApplicationServiceTest {
     final InstructorApplication instructorApplication;
     final InstructorRepository instructorRepository;
-    final MemberRepository memberRepository;
 
     @Test
     void apply() {
-        Member member = MemberFixture.createActiveMember();
-        memberRepository.save(member);
+        prepareMember();
 
         Instructor instructor = instructorApplication.apply(InstructorFixture.createApplyRequest(member));
 
@@ -37,8 +33,7 @@ class InstructorApplicationTest {
 
     @Test
     void duplicateApply() {
-        Member member = MemberFixture.createActiveMember();
-        memberRepository.save(member);
+        prepareMember();
 
         instructorApplication.apply(InstructorFixture.createApplyRequest(member));
 
@@ -62,8 +57,7 @@ class InstructorApplicationTest {
     }
 
     private Instructor preparePendingInstructor() {
-        Member member = MemberFixture.createActiveMember();
-        memberRepository.save(member);
+        prepareMember();
         return instructorApplication.apply(new InstructorApplyRequest(member.getId()));
     }
 
