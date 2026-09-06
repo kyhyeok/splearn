@@ -1,6 +1,5 @@
 package kimspring.splearn.application.course.provided;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import kimspring.splearn.domain.course.Course;

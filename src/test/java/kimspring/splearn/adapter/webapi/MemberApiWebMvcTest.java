@@ -2,17 +2,19 @@ package kimspring.splearn.adapter.webapi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kimspring.splearn.application.member.provided.MemberRegister;
-import kimspring.splearn.domain.member.Member;
-import kimspring.splearn.domain.member.MemberFixture;
-import kimspring.splearn.application.member.provided.MemberRegisterRequest;
-import lombok.RequiredArgsConstructor;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
+
+import kimspring.splearn.application.member.provided.MemberRegister;
+import kimspring.splearn.application.member.provided.MemberRegisterRequest;
+import kimspring.splearn.domain.member.Member;
+import kimspring.splearn.domain.member.MemberFixture;
+import lombok.RequiredArgsConstructor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;

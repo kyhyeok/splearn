@@ -1,10 +1,11 @@
 package kimspring.splearn;
 
-import kimspring.splearn.application.member.provided.MemberRegisterRequest;
 import org.assertj.core.api.AssertProvider;
 import org.springframework.test.json.JsonPathValueAssert;
 
 import java.util.function.Consumer;
+
+import kimspring.splearn.application.member.provided.MemberRegisterRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

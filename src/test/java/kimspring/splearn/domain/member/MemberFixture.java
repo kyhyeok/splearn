@@ -1,7 +1,6 @@
 package kimspring.splearn.domain.member;
 
 import org.instancio.Instancio;
-import org.instancio.Select;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import kimspring.splearn.application.member.provided.MemberRegisterRequest;

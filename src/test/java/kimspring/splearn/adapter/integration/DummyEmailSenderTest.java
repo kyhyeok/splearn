@@ -1,9 +1,10 @@
 package kimspring.splearn.adapter.integration;
 
-import kimspring.splearn.domain.shared.Email;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.StdIo;
 import org.junitpioneer.jupiter.StdOut;
+
+import kimspring.splearn.domain.shared.Email;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

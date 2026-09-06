@@ -2,10 +2,7 @@ package kimspring.splearn.application.instructor.provided;
 
 import org.junit.jupiter.api.Test;
 
-import kimspring.splearn.application.member.provided.MemberRegister;
 import kimspring.splearn.domain.instructor.Instructor;
-import kimspring.splearn.domain.member.Member;
-import kimspring.splearn.domain.member.MemberFixture;
 import kimspring.splearn.support.stereotype.ApplicationServiceTest;
 import kimspring.splearn.support.test.BaseApplicationServiceTest;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +17,7 @@ class InstructorFinderTest extends BaseApplicationServiceTest {
 
     @Test
     void findByMember() {
-        prepareMember();
+        prepareActiveMember();
 
         Instructor instructor = instructorApplication.apply(new InstructorApplyRequest(member.getId()));
 

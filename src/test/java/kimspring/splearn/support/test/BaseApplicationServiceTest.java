@@ -4,10 +4,13 @@ import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import kimspring.splearn.application.course.provided.CourseCreator;
+import kimspring.splearn.application.enrollment.provided.EnrollRequest;
+import kimspring.splearn.application.enrollment.provided.Enroller;
 import kimspring.splearn.application.instructor.provided.InstructorApplication;
 import kimspring.splearn.application.member.provided.MemberRegister;
 import kimspring.splearn.domain.course.Course;
 import kimspring.splearn.domain.course.CourseFixture;
+import kimspring.splearn.domain.enrollment.Enrollment;
 import kimspring.splearn.domain.instructor.Instructor;
 import kimspring.splearn.domain.instructor.InstructorFixture;
 import kimspring.splearn.domain.member.Member;
@@ -25,15 +28,20 @@ public class BaseApplicationServiceTest {
     @Autowired
     CourseCreator courseCreator;
 
+    @Autowired
+    Enroller enroller;
+
     protected Member member;
 
     protected Instructor instructor;
 
     protected Course course;
 
+    protected Enrollment enrollment;
+
     @NonNull
     protected Instructor prepareInstructor() {
-        prepareMember();
+        prepareActiveMember();
 
         this.instructor = instructorApplication.apply(InstructorFixture.createApplyRequest(member));
         this.instructor.approve();
@@ -41,7 +49,7 @@ public class BaseApplicationServiceTest {
         return this.instructor;
     }
 
-    protected @NonNull Member prepareMember() {
+    protected @NonNull Member prepareActiveMember() {
         this.member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
         this.member.activate();
         return this.member;
@@ -53,5 +61,21 @@ public class BaseApplicationServiceTest {
         this.course.updateInfo(CourseFixture.createCourseInfoUpdateRequest(null).toInfo());
 
         return this.course;
+    }
+
+    protected Course preparePublishedCourse() {
+        prepareCourse();
+
+        this.course.submitForReview();
+        this.course.publish();
+
+        return this.course;
+    }
+
+    protected Enrollment prepareEnrollment() {
+        Member member = prepareActiveMember();
+        Course course = preparePublishedCourse();
+        this.enrollment = enroller.enroll(new EnrollRequest(member.getId(), course.getId()));
+        return this.enrollment;
     }
 }
