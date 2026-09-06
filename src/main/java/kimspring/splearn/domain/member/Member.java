@@ -7,7 +7,6 @@ import java.util.Objects;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import kimspring.splearn.domain.AbstractEntity;
-import kimspring.splearn.domain.instructor.Instructor;
 import kimspring.splearn.domain.shared.Email;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -83,5 +82,7 @@ public class Member extends AbstractEntity {
         return status == MemberStatus.ACTIVE;
     }
 
-
+    public void ensureActive() {
+        state(status == MemberStatus.ACTIVE, "회원의 상태가 ACTIVE가 아닙니다");
+    }
 }

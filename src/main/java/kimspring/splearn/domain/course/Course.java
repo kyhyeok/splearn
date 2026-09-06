@@ -20,18 +20,18 @@ import static org.springframework.util.Assert.state;
 
 @Entity
 @Getter
-@ToString(callSuper = true, exclude = {})
+@ToString(callSuper = true, exclude = {"instructor"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Course extends AbstractEntity {
     @ManyToOne
-    Instructor instructor;
+    private Instructor instructor;
 
-    String title;
+    private String title;
 
-    CourseStatus status;
+    private CourseStatus status;
 
     @OneToOne
-    CourseDetail detail;
+    private CourseDetail detail;
 
     public Course(Instructor instructor, String title, @Nullable String description) {
         instructor.ensureActive();
