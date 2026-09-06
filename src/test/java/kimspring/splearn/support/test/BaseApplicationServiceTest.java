@@ -39,7 +39,6 @@ public class BaseApplicationServiceTest {
 
     protected Enrollment enrollment;
 
-    @NonNull
     protected Instructor prepareInstructor() {
         prepareActiveMember();
 
@@ -49,7 +48,7 @@ public class BaseApplicationServiceTest {
         return this.instructor;
     }
 
-    protected @NonNull Member prepareActiveMember() {
+    protected Member prepareActiveMember() {
         this.member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
         this.member.activate();
         return this.member;

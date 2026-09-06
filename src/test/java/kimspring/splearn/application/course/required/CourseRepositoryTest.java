@@ -9,15 +9,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-import jakarta.persistence.EntityManager;
-import kimspring.splearn.application.instructor.required.InstructorRepository;
-import kimspring.splearn.application.member.required.MemberRepository;
 import kimspring.splearn.domain.course.Course;
 import kimspring.splearn.domain.course.CourseFixture;
-import kimspring.splearn.domain.instructor.Instructor;
-import kimspring.splearn.domain.instructor.InstructorFixture;
-import kimspring.splearn.domain.member.Member;
-import kimspring.splearn.domain.member.MemberFixture;
+import kimspring.splearn.support.test.BaseRepositoryTest;
 import lombok.RequiredArgsConstructor;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,19 +19,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJpaTest
 @RequiredArgsConstructor
-class CourseRepositoryTest {
+class CourseRepositoryTest extends BaseRepositoryTest {
     final CourseRepository courseRepository;
-    final EntityManager entityManager;
-    final MemberRepository memberRepository;
-    final InstructorRepository instructorRepository;
 
-    Member member;
-    Instructor instructor;
 
     @BeforeEach
     void setUp() {
-        member = memberRepository.save(MemberFixture.createActiveMember());
-        instructor = instructorRepository.save(InstructorFixture.createActiveInstructor(member));
+        member = prepareActiveMember();
+        instructor = prepareActiveInstructor(member);
     }
 
     @Test
@@ -57,11 +46,9 @@ class CourseRepositoryTest {
 
     @Test
     void findByTitleContaining() {
-        List<Long> ids = Stream.of(CourseFixture.createCourse(instructor, "Hello Spring"),
-                                   CourseFixture.createCourse(instructor, "Clean Spring 2"),
-                                   CourseFixture.createCourse(instructor, "Clean Code"))
-                               .map(course -> courseRepository.save(course).getId())
-                               .toList();
+        List<Long> ids =
+            Stream.of(prepareCourse(instructor, "Hello Spring"), prepareCourse(instructor, "Clean Spring 2"),
+                prepareCourse(instructor, "Clean Code")).map(Course::getId).toList();
 
         assertThat(courseRepository.findByTitleContaining("Spring").stream().map(Course::getId)).isEqualTo(
             List.of(ids.get(0), ids.get(1)));
@@ -78,14 +65,13 @@ class CourseRepositoryTest {
 
     @Test
     void findByInstructor() {
-        var member2 = memberRepository.save(MemberFixture.createActiveMember());
-        var instructor2 = instructorRepository.save(InstructorFixture.createActiveInstructor(member2));
+        var instructor1 = prepareActiveInstructor();
+        var instructor2 = prepareActiveInstructor();
 
+        var course = prepareCourse(instructor1, null);
+        var course2 = prepareCourse(instructor2, null);
 
-        var course = courseRepository.save(CourseFixture.createCourse(instructor, "Title"));
-        var course2 = courseRepository.save(CourseFixture.createCourse(instructor2, "Title2"));
-
-        List<Course> courses = courseRepository.findByInstructorId(instructor.getId());
+        List<Course> courses = courseRepository.findByInstructorId(instructor1.getId());
         assertThat(courses).singleElement().isEqualTo(course);
 
         List<Course> courses2 = courseRepository.findByInstructorId(instructor2.getId());
@@ -97,7 +83,7 @@ class CourseRepositoryTest {
 
     @Test
     void uniqueTitleAndInstructor() {
-        courseRepository.save(CourseFixture.createCourse(instructor, "Title"));
+        prepareCourse(instructor, "Title");
 
         assertThatThrownBy(() -> courseRepository.save(CourseFixture.createCourse(instructor, "Title"))).isInstanceOf(
             DataIntegrityViolationException.class);
