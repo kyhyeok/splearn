@@ -18,7 +18,7 @@ public class EnrollmentQueryService implements EnrollmentFinder {
     public Enrollment find(Long enrollmentId) {
         return enrollmentRepository.findById(enrollmentId)
                                    .orElseThrow(
-                                       () -> new IllegalArgumentException("수강을 찾을 . 없습니다. ID: " + enrollmentId));
+                                       () -> new IllegalArgumentException("수강을 찾을 수 없습니다. ID: " + enrollmentId));
     }
 
     @Override
