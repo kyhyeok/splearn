@@ -88,4 +88,19 @@ public class Curriculum extends AbstractEntity {
 			removed.moveAllLessonsTo(previous, previous.getLessons().size());
 		}
 	}
+
+	public void moveLesson(int fromSectionIndex, int fromLessonIndex, int toSectionIndex, int toLessonIndex) {
+		Section from = this.sections.get(fromSectionIndex);
+		Section to = this.sections.get(toSectionIndex);
+
+		to.addLesson(toLessonIndex, from.removeLesson(fromLessonIndex));
+	}
+
+	public void validate() {
+		if (this.sections.isEmpty()) throw new InvalidCurriculumException("최소한 하나의 섹션이 필요합니다");
+
+		this.sections.forEach(section -> {
+			if (section.getLessons().isEmpty()) throw new InvalidCurriculumException("수업이 없는 섹션은 허용되지 않습니다");
+		});
+	}
 }

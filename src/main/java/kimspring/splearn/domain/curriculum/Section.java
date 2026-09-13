@@ -52,18 +52,18 @@ public class Section extends AbstractEntity {
 		this.lessons.get(lessonIndex).updateTitle(title);
 	}
 
-	public void removeLesson(int lessonIndex) {
-		this.lessons.remove(lessonIndex);
+	Lesson removeLesson(int lessonIndex) {
+		return this.lessons.remove(lessonIndex);
 	}
 
-	public void moveAllLessonsTo(Section target, int insertIndex) {
+	void moveAllLessonsTo(Section target, int insertIndex) {
 		while(!this.lessons.isEmpty()) {
 			target.addLesson(insertIndex++, this.lessons.getFirst());
 			this.lessons.removeFirst();
 		}
 	}
 
-	private void addLesson(int insertIndex, Lesson lesson) {
+	void addLesson(int insertIndex, Lesson lesson) {
 		lesson.moveTo(this);
 		this.lessons.add(insertIndex, lesson);
 	}
