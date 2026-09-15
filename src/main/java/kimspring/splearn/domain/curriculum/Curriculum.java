@@ -7,6 +7,7 @@ import static org.springframework.util.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.util.Assert;
 
@@ -102,5 +103,30 @@ public class Curriculum extends AbstractEntity {
 		this.sections.forEach(section -> {
 			if (section.getLessons().isEmpty()) throw new InvalidCurriculumException("수업이 없는 섹션은 허용되지 않습니다");
 		});
+	}
+
+	public Optional<Lesson> firstLesson() {
+		return this.allLessons().stream().findFirst();
+	}
+
+	public Optional<Lesson> nextLesson(Lesson lesson) {
+		List<Lesson> lessons = allLessons();
+
+		int index = lessons.indexOf(lesson);
+
+		state(index >= 0, "커리큘럼에 포함된 수업이 아닙니다");
+
+		if (index + 1 >= lessons.size()) return Optional.empty();
+
+		return Optional.of(lessons.get(index + 1));
+	}
+
+	public Optional<Lesson> nextLesson(Long lessonId) {
+		Lesson lesson = allLessons().stream().filter(
+			candidate -> lessonId.equals(candidate.getId()))
+			.findFirst()
+			.orElseThrow(() -> new IllegalArgumentException("레슨을 찾을 수 없습니다. ID: " + lessonId));
+
+		return nextLesson(lesson);
 	}
 }
