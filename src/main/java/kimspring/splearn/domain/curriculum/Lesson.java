@@ -1,10 +1,11 @@
 package kimspring.splearn.domain.curriculum;
 
+import static jakarta.persistence.FetchType.*;
+
 import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import kimspring.splearn.domain.AbstractEntity;
 import lombok.AccessLevel;
@@ -12,11 +13,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import static jakarta.persistence.FetchType.LAZY;
-
 @Entity
 @Getter
-@ToString(callSuper = true, exclude = {})
+@ToString(callSuper = true, exclude = {"section"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Lesson extends AbstractEntity {
     @ManyToOne(optional = false, fetch = LAZY)

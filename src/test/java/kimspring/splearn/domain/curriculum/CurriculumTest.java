@@ -3,6 +3,7 @@ package kimspring.splearn.domain.curriculum;
 import static kimspring.splearn.domain.curriculum.LessonContent.*;
 import static kimspring.splearn.domain.curriculum.SectionContent.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -316,6 +317,21 @@ class CurriculumTest {
 		assertThat(lesson).isEqualTo(l2);
 
 		assertThat(curriculum.nextLesson(lesson.getId())).isEmpty();
+	}
+
+	@Test
+	void unmodifiableListSectionsAndLessons() {
+		Curriculum curriculum = CurriculumFixture.createCurriculum();
+		Section s0 = curriculum.addSection("S0");
+		Lesson l0 = curriculum.addLesson(0, "L0");
+
+		assertThatThrownBy(() -> curriculum.getSections().add(new Section(curriculum, "Fail")))
+			.isInstanceOf(UnsupportedOperationException.class);
+
+		Section section = curriculum.getSections().getFirst();
+		assertThatThrownBy(() -> section.getLessons().add(new Lesson(section, "Fail")))
+			.isInstanceOf(UnsupportedOperationException.class);
+
 	}
 
 	private void assignIn(Lesson lesson, Long id) {

@@ -1,6 +1,10 @@
 package kimspring.splearn.domain.curriculum;
 
+import static jakarta.persistence.CascadeType.*;
+import static jakarta.persistence.FetchType.*;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,12 +18,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import static jakarta.persistence.CascadeType.ALL;
-import static jakarta.persistence.FetchType.LAZY;
-
 @Entity
 @Getter
-@ToString(callSuper = true, exclude = {})
+@ToString(callSuper = true, exclude = {"curriculum", "lessons"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Section extends AbstractEntity {
 	@ManyToOne(optional = false, fetch = LAZY)
@@ -29,7 +30,12 @@ public class Section extends AbstractEntity {
 	private String title;
 
 	@OneToMany(mappedBy = "section", cascade = ALL, orphanRemoval = true)
+	@Getter(AccessLevel.NONE)
 	private List<Lesson> lessons = new ArrayList<>();
+
+	public List<Lesson> getLessons() {
+		return Collections.unmodifiableList(lessons);
+	}
 
 	Section(Curriculum curriculum, String title) {
 		this.curriculum = curriculum;

@@ -5,11 +5,10 @@ import static jakarta.persistence.FetchType.*;
 import static org.springframework.util.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import org.springframework.util.Assert;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -23,14 +22,19 @@ import lombok.ToString;
 
 @Entity
 @Getter
-@ToString(callSuper = true, exclude = {})
+@ToString(callSuper = true, exclude = {"sections"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Curriculum extends AbstractEntity {
 	@OneToOne(optional = false, fetch = LAZY)
 	private Course course;
 
 	@OneToMany(mappedBy = "curriculum", cascade = ALL, orphanRemoval = true)
+	@Getter(AccessLevel.NONE)
 	private List<Section> sections = new ArrayList<>();
+
+	public List<Section> getSections() {
+		return Collections.unmodifiableList(sections);
+	}
 
 	public Curriculum(Course course) {
 		this.course = Objects.requireNonNull(course);
@@ -98,10 +102,12 @@ public class Curriculum extends AbstractEntity {
 	}
 
 	public void validate() {
-		if (this.sections.isEmpty()) throw new InvalidCurriculumException("최소한 하나의 섹션이 필요합니다");
+		if (this.sections.isEmpty())
+			throw new InvalidCurriculumException("최소한 하나의 섹션이 필요합니다");
 
 		this.sections.forEach(section -> {
-			if (section.getLessons().isEmpty()) throw new InvalidCurriculumException("수업이 없는 섹션은 허용되지 않습니다");
+			if (section.getLessons().isEmpty())
+				throw new InvalidCurriculumException("수업이 없는 섹션은 허용되지 않습니다");
 		});
 	}
 
@@ -114,16 +120,17 @@ public class Curriculum extends AbstractEntity {
 
 		int index = lessons.indexOf(lesson);
 
-		state(index >= 0, "커리큘럼에 포함된 수업이 아닙니다");
+		isTrue(index >= 0, "커리큘럼에 포함된 수업이 아닙니다");
 
-		if (index + 1 >= lessons.size()) return Optional.empty();
+		if (index + 1 >= lessons.size())
+			return Optional.empty();
 
 		return Optional.of(lessons.get(index + 1));
 	}
 
 	public Optional<Lesson> nextLesson(Long lessonId) {
 		Lesson lesson = allLessons().stream().filter(
-			candidate -> lessonId.equals(candidate.getId()))
+				candidate -> lessonId.equals(candidate.getId()))
 			.findFirst()
 			.orElseThrow(() -> new IllegalArgumentException("레슨을 찾을 수 없습니다. ID: " + lessonId));
 
