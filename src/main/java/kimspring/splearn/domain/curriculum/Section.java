@@ -12,6 +12,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderColumn;
 import kimspring.splearn.domain.AbstractEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -29,7 +30,8 @@ public class Section extends AbstractEntity {
 	@Column(length = 256)
 	private String title;
 
-	@OneToMany(mappedBy = "section", cascade = ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "section", cascade = ALL)
+	@OrderColumn(name = "lesson_order")
 	@Getter(AccessLevel.NONE)
 	private List<Lesson> lessons = new ArrayList<>();
 
