@@ -14,4 +14,6 @@ public interface CurriculumRepository extends Repository<Curriculum, Long> {
 
 	@EntityGraph(attributePaths = {"sections", "sections.lessons"})
 	Optional<Curriculum> findWithSectionsById(Long curriculumId);
+
+	Optional<Curriculum> findByCourseId(Long courseId);
 }
