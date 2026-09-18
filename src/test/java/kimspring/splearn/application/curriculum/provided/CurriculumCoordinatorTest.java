@@ -26,24 +26,6 @@ class CurriculumCoordinatorTest extends BaseApplicationServiceTest {
 	final EntityManager entityManager;
 
 	@Test
-	void create() {
-		var course = prepareCourse();
-
-		Curriculum curriculum = curriculumCoordinator.create(course.getId());
-
-		assertThat(curriculum.getId()).isNotNull();
-		assertThat(curriculum.getCourse()).isEqualTo(course);
-	}
-
-	@Test
-	void createFail() {
-		assertThatThrownBy(() -> curriculumCoordinator.create(Long.MAX_VALUE))
-			.isInstanceOf(IllegalArgumentException.class);
-		assertThatThrownBy(() -> curriculumCoordinator.create(null))
-			.isInstanceOf(NullPointerException.class);
-	}
-
-	@Test
 	void addSection() {
 		Curriculum curriculum = saveCurriculum();
 
@@ -316,7 +298,8 @@ class CurriculumCoordinatorTest extends BaseApplicationServiceTest {
 	}
 
 	private Curriculum saveCurriculum(SectionContent... sectionContents) {
-		Curriculum curriculum = new Curriculum(prepareCourse());
+		var course = prepareCourse();
+		Curriculum curriculum = curriculumFinder.findByCourse(course.getId());
 
 		for (SectionContent sectionContent : sectionContents) {
 			curriculum.addSection(sectionContent.title());

@@ -7,6 +7,7 @@ import kimspring.splearn.application.course.provided.CourseInfoUpdateRequest;
 import kimspring.splearn.application.course.provided.CoursePublisher;
 import kimspring.splearn.application.course.provided.CourseValidator;
 import kimspring.splearn.application.course.required.CourseRepository;
+import kimspring.splearn.application.course.required.CurriculumCreator;
 import kimspring.splearn.application.instructor.provided.InstructorFinder;
 import kimspring.splearn.domain.course.Course;
 import kimspring.splearn.domain.instructor.Instructor;
@@ -21,6 +22,7 @@ public class CourseModifyService implements CourseCreator, CoursePublisher {
     private final CourseFinder courseFinder;
     private final CourseValidator courseValidator;
     private final InstructorFinder instructorFinder;
+    private final CurriculumCreator curriculumCreator;
 
     @Override
     public Course create(CourseCreateRequest createRequest) throws ValidationException {
@@ -30,7 +32,11 @@ public class CourseModifyService implements CourseCreator, CoursePublisher {
 
         Course course = new Course(instructor, createRequest.title(), createRequest.description());
 
-        return courseRepository.save(course);
+        Course savedCourse = courseRepository.save(course);
+
+        curriculumCreator.createCurriculum(savedCourse);
+
+        return savedCourse;
     }
 
     @Override
@@ -50,7 +56,7 @@ public class CourseModifyService implements CourseCreator, CoursePublisher {
 
         courseValidator.validateForReview(course);
 
-        course.submitForReview();;
+        course.submitForReview();
 
         return courseRepository.save(course);
     }
@@ -61,7 +67,7 @@ public class CourseModifyService implements CourseCreator, CoursePublisher {
 
         courseValidator.validateForPublish(course);
 
-        course.publish();;
+        course.publish();
 
         return courseRepository.save(course);
     }
@@ -72,7 +78,7 @@ public class CourseModifyService implements CourseCreator, CoursePublisher {
 
         courseValidator.validateForArchive(course);
 
-        course.archive();;
+        course.archive();
 
         return courseRepository.save(course);
     }

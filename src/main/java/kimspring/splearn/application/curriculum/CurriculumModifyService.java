@@ -1,8 +1,6 @@
 package kimspring.splearn.application.curriculum;
 
-import java.util.Objects;
-
-import kimspring.splearn.application.course.provided.CourseFinder;
+import kimspring.splearn.application.course.required.CurriculumCreator;
 import kimspring.splearn.application.curriculum.provided.CurriculumCoordinator;
 import kimspring.splearn.application.curriculum.provided.CurriculumFinder;
 import kimspring.splearn.application.curriculum.required.CurriculumRepository;
@@ -18,20 +16,17 @@ import lombok.RequiredArgsConstructor;
 
 @ApplicationService
 @RequiredArgsConstructor
-public class CurriculumModifyService implements CurriculumCoordinator {
+public class CurriculumModifyService implements CurriculumCoordinator, CurriculumCreator {
 	private final CurriculumRepository curriculumRepository;
 	private final SectionRepository sectionRepository;
 	private final LessonRepository lessonRepository;
 	private final CurriculumFinder curriculumFinder;
-	private final CourseFinder courseFinder;
 
 	@Override
-	public Curriculum create(Long courseId) {
-		Course course = courseFinder.find(Objects.requireNonNull(courseId));
-
+	public Long createCurriculum(Course course) {
 		Curriculum curriculum = new Curriculum(course);
 
-		return curriculumRepository.save(curriculum);
+		return curriculumRepository.save(curriculum).getId();
 	}
 
 	@Override

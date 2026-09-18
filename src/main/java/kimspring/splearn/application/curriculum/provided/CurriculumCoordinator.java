@@ -4,8 +4,6 @@ import kimspring.splearn.domain.curriculum.Curriculum;
 import kimspring.splearn.domain.curriculum.InvalidCurriculumException;
 
 public interface CurriculumCoordinator {
-	Curriculum create(Long courseId);
-
 	Curriculum addSection(Long curriculumId, String title);
 
 	Curriculum addSection(Long curriculumId, int sectionIndex, String title);

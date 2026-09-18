@@ -73,9 +73,7 @@ class CurriculumFinderTest extends BaseApplicationServiceTest {
 
 	@Test
 	void findByCourseFail() {
-		var courseWithoutCurriculum = prepareCourse();
-
-		assertThatThrownBy(() -> curriculumFinder.findByCourse(courseWithoutCurriculum.getId()))
+		assertThatThrownBy(() -> curriculumFinder.findByCourse(Long.MAX_VALUE))
 			.isInstanceOf(IllegalArgumentException.class);
 	}
 
@@ -146,7 +144,8 @@ class CurriculumFinderTest extends BaseApplicationServiceTest {
 	}
 
 	private Curriculum saveCurriculum(SectionContent... sectionContents) {
-		Curriculum curriculum = new Curriculum(prepareCourse());
+		var course = prepareCourse();
+		Curriculum curriculum = curriculumRepository.findByCourseId(course.getId()).orElseThrow();
 
 		for (SectionContent sectionContent : sectionContents) {
 			curriculum.addSection(sectionContent.title());
