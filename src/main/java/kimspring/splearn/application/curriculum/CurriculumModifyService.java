@@ -6,9 +6,13 @@ import kimspring.splearn.application.course.provided.CourseFinder;
 import kimspring.splearn.application.curriculum.provided.CurriculumCoordinator;
 import kimspring.splearn.application.curriculum.provided.CurriculumFinder;
 import kimspring.splearn.application.curriculum.required.CurriculumRepository;
+import kimspring.splearn.application.curriculum.required.LessonRepository;
+import kimspring.splearn.application.curriculum.required.SectionRepository;
 import kimspring.splearn.domain.course.Course;
 import kimspring.splearn.domain.curriculum.Curriculum;
 import kimspring.splearn.domain.curriculum.InvalidCurriculumException;
+import kimspring.splearn.domain.curriculum.Lesson;
+import kimspring.splearn.domain.curriculum.Section;
 import kimspring.splearn.support.stereotype.ApplicationService;
 import lombok.RequiredArgsConstructor;
 
@@ -16,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CurriculumModifyService implements CurriculumCoordinator {
 	private final CurriculumRepository curriculumRepository;
+	private final SectionRepository sectionRepository;
+	private final LessonRepository lessonRepository;
 	private final CurriculumFinder curriculumFinder;
 	private final CourseFinder courseFinder;
 
@@ -50,7 +56,7 @@ public class CurriculumModifyService implements CurriculumCoordinator {
 	public Curriculum addLesson(Long curriculumId, int sectionIndex, String title) {
 		Curriculum curriculum = curriculumFinder.find(curriculumId);
 
-		curriculum.addSection(sectionIndex, title);
+		curriculum.addLesson(sectionIndex, title);
 
 		return curriculumRepository.save(curriculum);
 	}
@@ -77,7 +83,8 @@ public class CurriculumModifyService implements CurriculumCoordinator {
 	public Curriculum removeSection(Long curriculumId, int sectionIndex) {
 		Curriculum curriculum = curriculumFinder.find(curriculumId);
 
-		curriculum.removeSection(sectionIndex);
+		Section removed = curriculum.removeSection(sectionIndex);
+		sectionRepository.delete(removed);
 
 		return curriculumRepository.save(curriculum);
 	}
@@ -86,7 +93,8 @@ public class CurriculumModifyService implements CurriculumCoordinator {
 	public Curriculum removeLesson(Long curriculumId, int sectionIndex, int lessonIndex) {
 		Curriculum curriculum = curriculumFinder.find(curriculumId);
 
-		curriculum.removeLesson(sectionIndex, lessonIndex);
+		Lesson removed = curriculum.removeLesson(sectionIndex, lessonIndex);
+		lessonRepository.delete(removed);
 
 		return curriculumRepository.save(curriculum);
 	}
