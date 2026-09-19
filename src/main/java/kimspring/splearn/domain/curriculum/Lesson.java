@@ -18,10 +18,9 @@ import lombok.ToString;
 @ToString(callSuper = true, exclude = {"section"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Lesson extends AbstractEntity {
-    @ManyToOne(optional = false, fetch = LAZY)
+    @ManyToOne
     Section section;
 
-    @Column(length = 256)
     String title;
 
     Lesson(Section section, String title) {

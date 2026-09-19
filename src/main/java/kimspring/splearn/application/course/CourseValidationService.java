@@ -7,7 +7,9 @@ import kimspring.splearn.application.course.provided.CourseCreateRequest;
 import kimspring.splearn.application.course.provided.CourseInfoUpdateRequest;
 import kimspring.splearn.application.course.provided.CourseValidator;
 import kimspring.splearn.application.course.required.CourseRepository;
+import kimspring.splearn.application.course.required.CurriculumValidator;
 import kimspring.splearn.domain.course.Course;
+import kimspring.splearn.domain.curriculum.InvalidCurriculumException;
 import kimspring.splearn.domain.instructor.Instructor;
 import kimspring.splearn.support.exception.ValidationException;
 import kimspring.splearn.support.stereotype.ApplicationService;
@@ -17,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CourseValidationService implements CourseValidator {
     private final CourseRepository courseRepository;
+    private final CurriculumValidator curriculumValidator;
 
     @Override
     public void validateForCreate(Instructor instructor, CourseCreateRequest createRequest) throws ValidationException {
@@ -48,12 +51,32 @@ public class CourseValidationService implements CourseValidator {
 
     @Override
     public void validateForReview(Course course) throws ValidationException {
-        // TODO
+		List<String> errors = new ArrayList<>();
+
+		checkCurriculum(course, errors);
+
+		if (!errors.isEmpty()) {
+			throw new ValidationException(errors);
+		}
     }
 
-    @Override
+	private void checkCurriculum(Course course, List<String> errors) {
+		try {
+			curriculumValidator.validate(course.getId());
+		} catch (InvalidCurriculumException e) {
+			errors.add(e.getMessage());
+		}
+	}
+
+	@Override
     public void validateForPublish(Course course) throws ValidationException {
-        // TODO
+		List<String> errors = new ArrayList<>();
+
+		checkCurriculum(course, errors);
+
+		if (!errors.isEmpty()) {
+			throw new ValidationException(errors);
+		}
     }
 
     @Override

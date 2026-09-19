@@ -36,7 +36,7 @@
             </basic>
             <one-to-one name="detail" fetch="LAZY">
                 <cascade>
-                    <cascade-all/>
+                    <cascade-all />
                 </cascade>
             </one-to-one>
             <embedded name="email">
@@ -55,30 +55,25 @@
                 <column name="introduction" column-definition="TEXT"/>
             </basic>
             <basic name="registeredAt">
-                <column name="registeredAt" nullable="false"/>
+                <column name="registered_at" nullable="false"/>
             </basic>
             <basic name="activatedAt">
-                <column name="activatedAt"/>
+                <column name="activated_at"/>
             </basic>
             <basic name="deactivatedAt">
-                <column name="deactivatedAt"/>
+                <column name="deactivated_at"/>
             </basic>
-
             <embedded name="profile"/>
         </attributes>
     </entity>
 
     <entity class="kimspring.splearn.domain.instructor.Instructor">
-        <table name="instructor">
-            <unique-constraint name="UK_INSTRUCTOR_MEMBER_ID">
-                <column-name>member_id</column-name>
-            </unique-constraint>
-        </table>
         <attributes>
             <basic name="status">
                 <column name="status" length="20"/>
                 <enumerated>STRING</enumerated>
             </basic>
+            <one-to-one name="member" fetch="LAZY"/>
         </attributes>
     </entity>
 
@@ -97,7 +92,8 @@
                 <column name="status" nullable="false" length="20"/>
                 <enumerated>STRING</enumerated>
             </basic>
-            <one-to-one name="detail" fetch="LAZY">
+            <many-to-one name="instructor" optional="false" fetch="LAZY"/>
+            <one-to-one name="detail" optional="false" fetch="LAZY">
                 <cascade>
                     <cascade-all/>
                 </cascade>
@@ -108,7 +104,63 @@
     <entity class="kimspring.splearn.domain.course.CourseDetail">
         <attributes>
             <basic name="description">
-                <column name="description" length="512"/>
+                <column name="description" length="500"/>
+            </basic>
+        </attributes>
+    </entity>
+
+    <entity class="kimspring.splearn.domain.curriculum.Curriculum">
+        <attributes>
+            <one-to-many name="sections" mapped-by="curriculum">
+                <order-column name="section_order"/>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-many>
+            <one-to-one name="course" optional="false" fetch="LAZY"/>
+        </attributes>
+    </entity>
+
+    <entity class="kimspring.splearn.domain.curriculum.Section">
+        <attributes>
+            <basic name="title">
+                <column name="title" length="200"/>
+            </basic>
+            <many-to-one name="curriculum" optional="false" fetch="LAZY"/>
+            <one-to-many name="lessons" mapped-by="section">
+                <order-column name="lesson_order"/>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-many>
+        </attributes>
+    </entity>
+
+    <entity class="kimspring.splearn.domain.curriculum.Lesson">
+        <attributes>
+            <basic name="title">
+                <column name="title" length="200"/>
+            </basic>
+            <many-to-one name="section" optional="false" fetch="LAZY"/>
+        </attributes>
+    </entity>
+
+    <entity class="kimspring.splearn.domain.enrollment.Enrollment">
+        <table name="enrollment">
+            <unique-constraint name="UK_ENROLLMENT_MEMBER_COURSE">
+                <column-name>member_id</column-name>
+                <column-name>course_id</column-name>
+            </unique-constraint>
+        </table>
+        <attributes>
+            <many-to-one name="member" optional="false" fetch="LAZY"/>
+            <many-to-one name="course" optional="false" fetch="LAZY"/>
+            <basic name="status">
+                <column name="status" nullable="false" length="20"/>
+                <enumerated>STRING</enumerated>
+            </basic>
+            <basic name="enrolledAt">
+                <column name="enrolled_at" nullable="false"/>
             </basic>
         </attributes>
     </entity>

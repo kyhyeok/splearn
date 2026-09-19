@@ -4,12 +4,14 @@ import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import kimspring.splearn.application.course.provided.CourseCreator;
+import kimspring.splearn.application.curriculum.provided.CurriculumFinder;
 import kimspring.splearn.application.enrollment.provided.EnrollRequest;
 import kimspring.splearn.application.enrollment.provided.Enroller;
 import kimspring.splearn.application.instructor.provided.InstructorApplication;
 import kimspring.splearn.application.member.provided.MemberRegister;
 import kimspring.splearn.domain.course.Course;
 import kimspring.splearn.domain.course.CourseFixture;
+import kimspring.splearn.domain.curriculum.Curriculum;
 import kimspring.splearn.domain.enrollment.Enrollment;
 import kimspring.splearn.domain.instructor.Instructor;
 import kimspring.splearn.domain.instructor.InstructorFixture;
@@ -31,6 +33,9 @@ public class BaseApplicationServiceTest {
     @Autowired
     Enroller enroller;
 
+	@Autowired
+	CurriculumFinder curriculumFinder;
+
     protected Member member;
 
     protected Instructor instructor;
@@ -39,7 +44,10 @@ public class BaseApplicationServiceTest {
 
     protected Enrollment enrollment;
 
-    protected Instructor prepareInstructor() {
+    protected Curriculum curriculum;
+
+
+	protected Instructor prepareInstructor() {
         prepareActiveMember();
 
         this.instructor = instructorApplication.apply(InstructorFixture.createApplyRequest(member));
@@ -77,4 +85,28 @@ public class BaseApplicationServiceTest {
         this.enrollment = enroller.enroll(new EnrollRequest(member.getId(), course.getId()));
         return this.enrollment;
     }
+
+	protected Curriculum prepareCurriculumSectionsAndLessons(Course course) {
+		Curriculum curriculum = curriculumFinder.findByCourse(course.getId());
+
+		curriculum.addSection("S1");
+		curriculum.addLesson(0, "L1");
+		curriculum.addLesson(0, "L2");
+		curriculum.addSection("S2");
+		curriculum.addLesson(1, "L3");
+		curriculum.addLesson(1, "L4");
+		curriculum.addSection("S3");
+		curriculum.addLesson(2, "L5");
+
+		this.curriculum = curriculum;
+
+		return this.curriculum;
+	}
+
+	protected Course prepareCourseWithCurriculum() {
+		prepareCourse();
+		prepareCurriculumSectionsAndLessons(course);
+
+		return this.course;
+	}
 }

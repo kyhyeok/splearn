@@ -105,11 +105,9 @@ public class CurriculumModifyService implements CurriculumCoordinator, Curriculu
 	}
 
 	@Override
-	public Curriculum validate(Long curriculumId) throws InvalidCurriculumException {
-		Curriculum curriculum = curriculumFinder.find(curriculumId);
+	public void validate(Long courseId) throws InvalidCurriculumException {
+		Curriculum curriculum = curriculumFinder.findByCourse(courseId);
 
 		curriculum.validate();
-
-		return curriculum;
 	}
 }

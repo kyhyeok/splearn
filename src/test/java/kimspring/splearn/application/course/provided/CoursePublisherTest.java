@@ -17,7 +17,7 @@ class CoursePublisherTest extends BaseApplicationServiceTest {
 
     @BeforeEach
     void setUp() {
-        prepareCourse();
+        prepareCourseWithCurriculum();
     }
 
     @Test

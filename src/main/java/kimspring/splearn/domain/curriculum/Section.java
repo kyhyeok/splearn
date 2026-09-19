@@ -24,14 +24,12 @@ import lombok.ToString;
 @ToString(callSuper = true, exclude = {"curriculum", "lessons"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Section extends AbstractEntity {
-	@ManyToOne(optional = false, fetch = LAZY)
+	@ManyToOne
 	private Curriculum curriculum;
 
-	@Column(length = 256)
 	private String title;
 
-	@OneToMany(mappedBy = "section", cascade = ALL)
-	@OrderColumn(name = "lesson_order")
+	@OneToMany
 	@Getter(AccessLevel.NONE)
 	private List<Lesson> lessons = new ArrayList<>();
 

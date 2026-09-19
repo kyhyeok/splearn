@@ -1,9 +1,11 @@
 package kimspring.splearn.application.curriculum.provided;
 
+import kimspring.splearn.application.course.required.CurriculumCreator;
+import kimspring.splearn.application.course.required.CurriculumValidator;
 import kimspring.splearn.domain.curriculum.Curriculum;
 import kimspring.splearn.domain.curriculum.InvalidCurriculumException;
 
-public interface CurriculumCoordinator {
+public interface CurriculumCoordinator extends CurriculumCreator, CurriculumValidator {
 	Curriculum addSection(Long curriculumId, String title);
 
 	Curriculum addSection(Long curriculumId, int sectionIndex, String title);
@@ -19,6 +21,4 @@ public interface CurriculumCoordinator {
 	Curriculum removeLesson(Long curriculumId, int sectionIndex, int lessonIndex);
 
 	Curriculum moveLesson(Long curriculumId, int fromSectionIndex, int fromLessonIndex, int toSectionIndex, int toLessonIndex);
-
-	Curriculum validate(Long curriculumId) throws InvalidCurriculumException;
 }

@@ -5,13 +5,8 @@ import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import kimspring.splearn.domain.AbstractEntity;
 import kimspring.splearn.domain.course.Course;
 import kimspring.splearn.domain.member.Member;
@@ -19,28 +14,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import static jakarta.persistence.FetchType.LAZY;
 import static org.springframework.util.Assert.state;
 
 @Entity
 @Getter
 @ToString(callSuper = true, exclude = {"member", "course"})
 @NoArgsConstructor
-@Table(uniqueConstraints = @UniqueConstraint(name = "UK_ENROLLMENT_MEMBER_COURSE", columnNames = {"member_id", "course_id"}))
 public class Enrollment extends AbstractEntity {
     @NaturalId
-    @ManyToOne(optional = false, fetch = LAZY)
+    @ManyToOne
     private Member member;
 
     @NaturalId
-    @ManyToOne(optional = false, fetch = LAZY)
+    @ManyToOne
     private Course course;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
     private EnrollmentStatus status;
 
-    @Column(nullable = false)
     private LocalDateTime enrolledAt;
 
     private LocalDateTime completedAt;

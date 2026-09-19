@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import kimspring.splearn.application.course.required.CourseRepository;
 import kimspring.splearn.domain.course.Course;
 import kimspring.splearn.domain.course.CourseFixture;
+import kimspring.splearn.domain.course.CourseStatus;
+import kimspring.splearn.domain.curriculum.Curriculum;
 import kimspring.splearn.support.exception.ValidationException;
 import kimspring.splearn.support.stereotype.ApplicationServiceTest;
 import kimspring.splearn.support.test.BaseApplicationServiceTest;
@@ -18,8 +20,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class CourseValidatorTest extends BaseApplicationServiceTest {
     final CourseValidator courseValidator;
     final CourseRepository courseRepository;
+    final CoursePublisher coursePublisher;
 
-    @Test
+	@Test
     void titleDuplicationForCreate() {
         var instructor1 = prepareInstructor();
         var instructor2 = prepareInstructor();
@@ -53,11 +56,50 @@ class CourseValidatorTest extends BaseApplicationServiceTest {
         courseValidator.validateForUpdate(course1_1, CourseFixture.createCourseInfoUpdateRequest(course1_1.getTitle()));
 
         // title 변경하는데 중복 발생 - FAIL
-
         assertThatThrownBy(() -> courseValidator.validateForUpdate(course1_1,
             CourseFixture.createCourseInfoUpdateRequest(course1_2.getTitle()))).isInstanceOfSatisfying(
             ValidationException.class, e -> assertThat(e.getErrors()).hasSize(1));
-
-
     }
+
+	@Test
+	void submitForReview() {
+		Course course = prepareCourse();
+		prepareCurriculumSectionsAndLessons(course);
+
+		coursePublisher.submitForReview(course.getId());
+
+		assertThat(course.getStatus()).isEqualTo(CourseStatus.IN_REVIEW);
+	}
+
+	@Test
+	void submitForReviewFailInvalidCurriculum() {
+		Course course = prepareCourse();
+		Curriculum curriculum = prepareCurriculumSectionsAndLessons(course);
+		curriculum.removeLesson(2, 0);
+
+		assertThatThrownBy(() -> coursePublisher.submitForReview(course.getId()))
+			.isInstanceOf(ValidationException.class);
+	}
+
+	@Test
+	void publish() {
+		Course course = prepareCourse();
+		prepareCurriculumSectionsAndLessons(course);
+
+		coursePublisher.submitForReview(course.getId());
+		coursePublisher.publish(course.getId());
+
+		assertThat(course.getStatus()).isEqualTo(CourseStatus.PUBLISHED);
+	}
+
+	@Test
+	void publishFailInvalidCurriculum() {
+		Course course = prepareCourse();
+		Curriculum curriculum = prepareCurriculumSectionsAndLessons(course);
+		coursePublisher.submitForReview(course.getId());
+		curriculum.removeLesson(2, 0);
+
+		assertThatThrownBy(() -> coursePublisher.publish(course.getId()))
+			.isInstanceOf(ValidationException.class);
+	}
 }

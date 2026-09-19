@@ -275,19 +275,22 @@ class CurriculumCoordinatorTest extends BaseApplicationServiceTest {
 			section("S1", lesson("L1"))
 		);
 
-		Curriculum validated = curriculumCoordinator.validate(curriculum.getId());
-
-		assertThat(validated.getId()).isEqualTo(curriculum.getId());
+		// validate()는 강의(Course) ID를 받아 검증하고, 문제가 없으면 예외를 던지지 않는다
+		assertThatNoException().isThrownBy(
+			() -> curriculumCoordinator.validate(curriculum.getCourse().getId()));
 	}
 
 	@Test
 	void validateFail() {
 		Curriculum withoutSection = saveCurriculum();
-		Curriculum withEmptySection = saveCurriculum(section("S0", lesson("L0")), section("S1"));
+		Long courseIdWithoutSection = withoutSection.getCourse().getId();
 
-		assertThatThrownBy(() -> curriculumCoordinator.validate(withoutSection.getId()))
+		Curriculum withEmptySection = saveCurriculum(section("S0", lesson("L0")), section("S1"));
+		Long courseIdWithEmptySection = withEmptySection.getCourse().getId();
+
+		assertThatThrownBy(() -> curriculumCoordinator.validate(courseIdWithoutSection))
 			.isInstanceOf(InvalidCurriculumException.class);
-		assertThatThrownBy(() -> curriculumCoordinator.validate(withEmptySection.getId()))
+		assertThatThrownBy(() -> curriculumCoordinator.validate(courseIdWithEmptySection))
 			.isInstanceOf(InvalidCurriculumException.class);
 	}
 
